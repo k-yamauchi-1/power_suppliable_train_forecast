@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <!--
+        平文 HTTP 通信を全ドメインで禁止し、システム証明書のみ信頼する。
+        Firebase / Google API はすべて HTTPS のため影響なし。
+    -->
+    <base-config cleartextTrafficPermitted="false">
+        <trust-anchors>
+            <certificates src="system"/>
+        </trust-anchors>
+    </base-config>
+</network-security-config>

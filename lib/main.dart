@@ -68,7 +68,7 @@ class _PowerSupliableTrainAppState extends State<PowerSupliableTrainApp> {
   ) : ProviderScope(
     overrides: [sharedPreferencesProvider.overrideWithValue(_prefs!)],
     child: MaterialApp(
-      title: '充電できるロマンスカー予報アプリ',
+      title: 'ロマンスカー充電コンセント予報',
       theme: ThemeData(
         textTheme: GoogleFonts.notoSansJpTextTheme(Theme.of(context).textTheme),
         colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFFF05322)),

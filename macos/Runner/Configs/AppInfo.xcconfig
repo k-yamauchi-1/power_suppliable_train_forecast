@@ -8,7 +8,7 @@
 PRODUCT_NAME = power_suppliable_train_forecast
 
 // The application's bundle identifier
-PRODUCT_BUNDLE_IDENTIFIER = com.example.powerSuppliableTrainForecast
+PRODUCT_BUNDLE_IDENTIFIER = com.k26yamauchi.powerSuppliableTrainForecast
 
 // The copyright displayed in application information
-PRODUCT_COPYRIGHT = Copyright © 2026 com.example. All rights reserved.
+PRODUCT_COPYRIGHT = Copyright © 2026 com.k26yamauchi. All rights reserved.

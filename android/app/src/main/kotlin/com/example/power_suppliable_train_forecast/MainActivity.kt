@@ -1,4 +1,4 @@
-package com.example.power_suppliable_train_forecast
+package com.k26yamauchi.power_suppliable_train_forecast
 
 import io.flutter.embedding.android.FlutterActivity
 

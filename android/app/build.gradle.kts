@@ -11,7 +11,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.power_suppliable_train_forecast"
+    namespace = "com.k26yamauchi.power_suppliable_train_forecast"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
@@ -26,7 +26,7 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId = "com.example.power_suppliable_train_forecast"
+        applicationId = "com.k26yamauchi.power_suppliable_train_forecast"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
         minSdk = flutter.minSdkVersion

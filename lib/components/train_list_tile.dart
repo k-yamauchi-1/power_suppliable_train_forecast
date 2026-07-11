@@ -6,6 +6,7 @@ import 'scrollable_text.dart';
 import '../models/facility.dart';
 import '../models/service.dart';
 import '../models/train.dart';
+import '../providers/facility_forecast.dart';
 import 'app_icons/probability_icon.dart';
 
 class TrainListTile extends ConsumerWidget {
@@ -18,16 +19,14 @@ class TrainListTile extends ConsumerWidget {
     final service = ref.watch(serviceProvider).value;
     final stopsNameList =
         train.stops.map((s) => service?.stations[s.id]?.name ?? '').toList();
-
-    final facility = service?.facilities[train.facilityId]
-        ?? Facility(carType: CarType.unfixed, probabilities: {});
-    final probabilities = facility.probabilities;
+    final carType = (ref.watch(forecastProvider).value?[train.facilityId]
+        ?? service?.facilities[train.facilityId])?.carType ?? CarType.unfixed;
 
     return train.stops.isEmpty ? const SizedBox.shrink() : Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       child: Container(
         decoration: BoxDecoration(
-          color: facility.carType.bgColor,
+          color: carType.bgColor,
           borderRadius: BorderRadius.circular(12.0),
           border: Border.all(color: Colors.grey.shade400)
         ),
@@ -36,7 +35,7 @@ class TrainListTile extends ConsumerWidget {
           child: Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
             Column(mainAxisAlignment: MainAxisAlignment.center, children: [
               Image.asset(
-                'assets/icon_${facility.carType.iconFileName}.jpg',
+                'assets/icon_${carType.iconFileName}.jpg',
                 width: 48, height: 48,
                 errorBuilder: (_, __, ___) => SizedBox(
                   width: 48, height: 36,
@@ -51,7 +50,7 @@ class TrainListTile extends ConsumerWidget {
                 )
               ),
               const Gap(4),
-              Text(facility.carType.dispName, style: const TextStyle(
+              Text(carType.dispName, style: const TextStyle(
                 fontSize: 12, fontWeight: FontWeight.bold, height: 1.2
               ))
             ]),
@@ -85,23 +84,38 @@ class TrainListTile extends ConsumerWidget {
               ]
             )),
             const Gap(4),
-            if (probabilities.length < 2 || train.internalTozanLine)
-              ProbabilityIcon(probability: probabilities.values.firstOrNull)
-            else  Column(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: probabilities.entries.map((entry) => Padding(
-                padding: const EdgeInsets.symmetric(vertical: 3.0),
-                child: Row(mainAxisSize: MainAxisSize.min, children: [
-                  Text(
-                    '${entry.key}\n号車', textAlign: TextAlign.center,
-                    style: const TextStyle(fontSize: 12, height: 1.2)
-                  ),
-                  const Gap(3),
-                  ProbabilityIcon(probability: entry.value, size: 28)
-                ])
-              )).toList()
-            )
+            switch(ref.watch(forecastProvider)) {
+              AsyncLoading() => const Center(child: CircularProgressIndicator()),
+              AsyncError() => const Icon(
+                Icons.error, size: 32, color: Colors.redAccent
+              ),
+              AsyncValue(:final value) => () {
+                final facility = value?[train.facilityId]
+                    ?? service?.facilities[train.facilityId];
+                final probabilities = facility?.probabilities ?? {};
+
+                if (probabilities.length < 2 || train.internalTozanLine) {
+                  return ProbabilityIcon(
+                    probability: probabilities.values.firstOrNull
+                  );
+                }
+                return Column(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: probabilities.entries.map((entry) => Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 3.0),
+                    child: Row(mainAxisSize: MainAxisSize.min, children: [
+                      Text(
+                        '${entry.key}\n号車', textAlign: TextAlign.center,
+                        style: const TextStyle(fontSize: 12, height: 1.2)
+                      ),
+                      const Gap(3),
+                      ProbabilityIcon(probability: entry.value, size: 28)
+                    ])
+                  )).toList()
+                );
+              }()
+            }
           ])
         )
       )

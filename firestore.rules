@@ -1,0 +1,18 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // romancecar コレクション:
+    //   - 匿名認証を含む認証済みユーザーのみ読み取り可
+    //   - 書き込みはクライアントから一切不可（バックエンドのみ）
+    match /romancecar/{document=**} {
+      allow read: if request.auth != null;
+      allow write: if false;
+    }
+
+    // 上記以外のコレクションはデフォルトですべて拒否
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

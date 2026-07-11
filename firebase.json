@@ -1,0 +1,28 @@
+{
+  "firestore": {
+    "rules": "firestore.rules"
+  },
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "pwr-suppliable-train-forecast",
+          "appId": "1:364722643566:android:6619ea49d65873124bfc7f",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "pwr-suppliable-train-forecast",
+          "configurations": {
+            "android": "1:364722643566:android:6619ea49d65873124bfc7f",
+            "ios": "1:364722643566:ios:97f365c8ee6a18494bfc7f",
+            "macos": "1:364722643566:ios:97f365c8ee6a18494bfc7f",
+            "web": "1:364722643566:web:b9ad18dbcb15b9e44bfc7f",
+            "windows": "1:364722643566:web:035949ce22d31fa44bfc7f"
+          }
+        }
+      }
+    }
+  }
+}

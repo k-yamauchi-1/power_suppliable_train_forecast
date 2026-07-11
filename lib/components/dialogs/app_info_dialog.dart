@@ -69,9 +69,12 @@ class AppInfoDialog extends HookConsumerWidget {
           style: TextStyle(fontSize: 12.8),
         )))),
         const Gap(8),
-        _linkText('利用規約・プライバシーポリシー', onTap: () async {
-          await launchUrl(Uri.parse('https://example.com/terms'));
-        })
+        _linkText(
+          '利用規約・プライバシーポリシー',
+          onTap: () async => await launchUrl(
+            Uri.parse('https://pwr-suppliable-train-forecast.web.app')
+          )
+        )
       ]),
       actionsAlignment: MainAxisAlignment.center,
       actions: [

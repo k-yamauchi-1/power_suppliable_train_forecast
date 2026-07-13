@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import 'validate_helpers.dart';
+
 part 'facility.freezed.dart';
 part 'facility.g.dart';
 
@@ -48,6 +50,8 @@ extension NullableProbabilityExtension on Probability? {
 
 @freezed
 abstract class Facility with _$Facility {
+  const Facility._();
+
   const factory Facility({
     @JsonKey(name: 'car_type')
     @Default(CarType.unfixed) CarType carType,
@@ -57,4 +61,11 @@ abstract class Facility with _$Facility {
 
   factory Facility.fromJson(Map<String, dynamic> json) =>
       _$FacilityFromJson(json);
+
+  /// probabilities は1つ以上必須。1つだけの場合は空のキーを許容する。
+  List<String> validate() => [
+    validateSize('probabilities', probabilities.length, min: 1),
+    if (probabilities.length > 1)
+      validateKeysNotEmpty('probabilities', probabilities.keys)
+  ].nonNulls.toList();
 }

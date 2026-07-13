@@ -210,8 +210,8 @@ return $default(_that.from,_that.to,_that.price);case _:
 /// @nodoc
 @JsonSerializable()
 
-class _Surcharge implements Surcharge {
-  const _Surcharge({required this.from, required this.to, required this.price});
+class _Surcharge extends Surcharge {
+  const _Surcharge({required this.from, required this.to, required this.price}): super._();
   factory _Surcharge.fromJson(Map<String, dynamic> json) => _$SurchargeFromJson(json);
 
 @override final  String from;

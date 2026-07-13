@@ -2,6 +2,7 @@ import 'package:collection/collection.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../string_normalizer.dart';
+import 'validate_helpers.dart';
 
 part 'station.freezed.dart';
 part 'station.g.dart';
@@ -32,4 +33,10 @@ abstract class Station with _$Station {
     alias.normalize().contains(q.normalize()) ||
     intl.normalize().contains(q.normalize())
   );
+
+  /// destinations は down_dest, up_dest の少なくとも片方が必須。
+  List<String> validate() => [
+    if (name.isEmpty) 'name が空です',
+    validateSize('destinations', destinations.length, min: 1)
+  ].nonNulls.toList();
 }

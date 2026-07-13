@@ -101,4 +101,4 @@ final class ServiceProvider
   }
 }
 
-String _$serviceHash() => r'7d2063dc5bc546f1ebfc7b0380cf07ec0daae005';
+String _$serviceHash() => r'bc1a48b9fe1becca08c7b5efe852a1abfdc31bcc';

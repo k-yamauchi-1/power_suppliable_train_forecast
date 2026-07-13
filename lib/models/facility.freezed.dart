@@ -210,8 +210,8 @@ return $default(_that.carType,_that.probabilities,_that.notes);case _:
 /// @nodoc
 @JsonSerializable()
 
-class _Facility implements Facility {
-  const _Facility({@JsonKey(name: 'car_type') this.carType = CarType.unfixed, required final  Map<String, Probability> probabilities, this.notes}): _probabilities = probabilities;
+class _Facility extends Facility {
+  const _Facility({@JsonKey(name: 'car_type') this.carType = CarType.unfixed, required final  Map<String, Probability> probabilities, this.notes}): _probabilities = probabilities,super._();
   factory _Facility.fromJson(Map<String, dynamic> json) => _$FacilityFromJson(json);
 
 @override@JsonKey(name: 'car_type') final  CarType carType;

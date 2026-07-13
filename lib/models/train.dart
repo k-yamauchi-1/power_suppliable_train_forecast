@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import 'facility.dart';
+import 'station.dart';
+import 'validate_helpers.dart';
+
 part 'train.freezed.dart';
 part 'train.g.dart';
 
@@ -34,6 +38,20 @@ abstract class Train with _$Train {
   bool get internalTozanLine => stops.firstOrNull?.id == "OH51" || (
     stops.firstOrNull?.id == "OH47" && stops.lastOrNull?.id == "OH51"
   );
+
+  List<String> validate({
+    required Map<String, Facility> facilities,
+    required Map<String, Station> stations
+  }) => [
+    if (name.isEmpty) 'name が空です',
+    if (number < 1) 'number が1未満です（実際: $number）',
+    if (!facilities.containsKey(facilityId))
+      'facilityId "$facilityId" が facilities に存在しません',
+    validateSize('stops', stops.length),
+    ...stops.expand(
+      (s) => s.validate(stations).map((msg) => 'stops[${s.id}]: $msg')
+    )
+  ].nonNulls.toList();
 }
 
 @freezed
@@ -52,4 +70,10 @@ abstract class TrainStop with _$TrainStop {
   int get dateMin => hour * 60 + min;
   String get dispTime =>
       '${hour.toString().padLeft(2, '0')}:${min.toString().padLeft(2, '0')}';
+
+  List<String> validate(Map<String, Station> stations) => [
+    if (!stations.containsKey(id)) 'id "$id" が stations に存在しません',
+    if (hour < 4 || hour > 26) 'hour(4-26) が範囲外です: $hour',
+    if (min < 0 || min > 59) 'min(0-59) が範囲外です: $min'
+  ];
 }

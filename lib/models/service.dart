@@ -9,6 +9,7 @@ import 'facility.dart';
 import 'search_condition.dart';
 import 'station.dart';
 import 'train.dart';
+import 'validate_helpers.dart';
 
 part 'service.freezed.dart';
 part 'service.g.dart';
@@ -19,6 +20,8 @@ typedef Reachable = ({String id, String name, int surcharge});
 
 @freezed
 abstract class Surcharge with _$Surcharge {
+  const Surcharge._();
+
   const factory Surcharge({
     required String from,
     required String to,
@@ -27,6 +30,12 @@ abstract class Surcharge with _$Surcharge {
 
   factory Surcharge.fromJson(Map<String, dynamic> json) =>
       _$SurchargeFromJson(json);
+
+  /// from も to も stations に存在するIDである必要がある。
+  List<String> validate(Map<String, Station> stations) => [
+    if (!stations.containsKey(from)) 'from "$from" が stations に存在しません',
+    if (!stations.containsKey(to)) 'to "$to" が stations に存在しません'
+  ];
 }
 
 @Freezed(toJson: false)
@@ -82,6 +91,43 @@ abstract class Service with _$Service {
       (a, b) => (a.stops.first.dateMin).compareTo(b.stops.first.dateMin)
     );
   }
+
+  /// マスタデータ全体の検証を行う。不備がなければ空の List を返す。
+  List<String> validate() => [
+    validateSize('stations', stations.length),
+    validateKeysNotEmpty('stations', stations.keys),
+    ...stations.entries.expand(
+      (e) => e.value.validate().map((msg) => 'stations[${e.key}]: $msg')
+    ),
+
+    validateSize('facilities', facilities.length),
+    validateKeysNotEmpty('facilities', facilities.keys),
+    ...facilities.entries.expand(
+      (e) => e.value.validate().map((msg) => 'facilities[${e.key}]: $msg')
+    ),
+
+    validateSize('trains', trains.length),
+    ...trains.entries.expand((dateTrainsMap) {
+      final dateLabel = 'trains[${dateTrainsMap.key}]';
+      return [
+        validateSize(dateLabel, dateTrainsMap.value.length),
+        ...dateTrainsMap.value.entries.expand((dircTrainsMap) {
+          final dircLabel = '$dateLabel[${dircTrainsMap.key}]';
+          return [
+            validateKeysNotEmpty(dircLabel, dircTrainsMap.value.keys),
+            ...dircTrainsMap.value.entries.expand((train) => train.value.validate(
+              facilities: facilities, stations: stations
+            ).map((msg) => '$dircLabel[${train.key}]: $msg'))
+          ];
+        })
+      ];
+    }),
+
+    validateSize('surcharges', surcharges.length),
+    ...surcharges.expand((sc) => sc.validate(stations).map(
+      (msg) => 'surcharges[${sc.from}->${sc.to}]: $msg'
+    ))
+  ].nonNulls.toList();
 }
 
 @riverpod
@@ -99,9 +145,14 @@ Future<Service> service(Ref ref) async {
       downloadOptions: DownloadOptions.fullMedia,
     ) as Media;
 
-    return Service.fromJson(json.decode(
+    final service = Service.fromJson(json.decode(
       utf8.decode(await media.stream.reduce((a, b) => [...a, ...b]))
     ) as Map<String, dynamic>);
+
+    if (service.validate().isNotEmpty) {
+      throw Exception('【マスタデータ不備】\n${service.validate().join('\n')}');
+    }
+    return service;
   } finally {
     client.close();  // クライアントは必ずクローズする
   }

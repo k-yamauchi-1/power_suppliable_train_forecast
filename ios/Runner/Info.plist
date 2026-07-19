@@ -66,6 +66,11 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>CFBundleLocalizations</key>
+	<array>
+	    <string>ja</string>
+	    <string>en</string>
+	</array>
 	<!-- App Transport Security: HTTP通信を明示的に禁止 -->
 	<key>NSAppTransportSecurity</key>
 	<dict>

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -9,14 +11,20 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'components/app_icons/splash_icon.dart';
+import 'providers/crashlytics_observer.dart';
 import 'providers/local_storage.dart';
 import 'screens/home_screen.dart';
 
 import 'firebase_options.dart';
 
 void main() {
-  WidgetsFlutterBinding.ensureInitialized();
-  runApp(const PowerSupliableTrainApp());
+  runZonedGuarded(() {
+    WidgetsFlutterBinding.ensureInitialized();
+    runApp(const PowerSupliableTrainApp());
+  }, (error, stack) {
+    // Zone 内で捕捉されなかった非同期例外を Crashlytics に記録する
+    crashlyticsInstance?.recordError(error, stack, fatal: true);
+  });
 }
 
 class PowerSupliableTrainApp extends StatefulWidget {
@@ -28,6 +36,17 @@ class PowerSupliableTrainApp extends StatefulWidget {
 
 class _PowerSupliableTrainAppState extends State<PowerSupliableTrainApp> {
   SharedPreferences? _prefs;
+
+  Future<void> _initializeCrashlytics() async {
+    // Flutter フレームワークが検知した致命的エラーを Crashlytics に記録する
+    FlutterError.onError = crashlyticsInstance?.recordFlutterFatalError;
+    PlatformDispatcher.instance.onError = (error, stack) {
+      crashlyticsInstance?.recordError(error, stack, fatal: true);
+      return true;
+    };
+    // デバッグ実行時は収集しない
+    await crashlyticsInstance?.setCrashlyticsCollectionEnabled(!kDebugMode);
+  }
 
   Future<void> _authFirebaseServices() async {
     // 正規アプリからのリクエストのみ許可するため FirebaseAuth/AppCheck を有効化
@@ -51,6 +70,7 @@ class _PowerSupliableTrainAppState extends State<PowerSupliableTrainApp> {
 
     // 初期化処理と最小待機時間タイマーを同時に開始し、全部終わるのを待つ
     final results = await Future.wait([
+      _initializeCrashlytics(),
       _authFirebaseServices(),
       Future.delayed(const Duration(milliseconds: 600)),  // 最小表示時間タイマー
       SharedPreferences.getInstance()  // ストレージ初期化処理　★必ず最後に置く
@@ -70,6 +90,7 @@ class _PowerSupliableTrainAppState extends State<PowerSupliableTrainApp> {
   Widget build(BuildContext context) => _prefs == null ? MaterialApp(
     home: const Scaffold(body: Center(child: SplashIcon(size: 108)))
   ) : ProviderScope(
+    observers: const [CrashlyticsProviderObserver()],
     overrides: [sharedPreferencesProvider.overrideWithValue(_prefs!)],
     child: MaterialApp(
       title: 'ロマンスカー充電コンセント予報',

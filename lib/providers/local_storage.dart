@@ -39,7 +39,7 @@ class LocalStorage extends _$LocalStorage {
     return (conds: cond, initKey: _prefs.getInt('init'));
   }
 
-  bool get initialized => state.initKey != null; 
+  bool get initialized => state.initKey != null;
   SearchCond get initCond => state.conds[state.initKey ?? 0] ?? SearchCond();
   void setInit([int key = 0]) => state = (conds: state.conds, initKey: key);
 

@@ -14,8 +14,8 @@ import '../components/inputs/station_input.dart';
 import '../components/inputs/target_date_selector.dart';
 import '../components/inputs/time_selector.dart';
 import '../components/train_list_tile.dart';
-import '../models/service.dart';
 import '../models/search_condition.dart';
+import '../models/service.dart';
 import '../providers/local_storage.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {

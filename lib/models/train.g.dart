@@ -36,6 +36,7 @@ _TrainStop _$TrainStopFromJson(Map<String, dynamic> json) => _TrainStop(
   id: json['id'] as String,
   hour: (json['hour'] as num).toInt(),
   min: (json['min'] as num).toInt(),
+  stopMin: (json['stop_min'] as num?)?.toInt() ?? 0,
 );
 
 Map<String, dynamic> _$TrainStopToJson(_TrainStop instance) =>
@@ -43,4 +44,5 @@ Map<String, dynamic> _$TrainStopToJson(_TrainStop instance) =>
       'id': instance.id,
       'hour': instance.hour,
       'min': instance.min,
+      'stop_min': instance.stopMin,
     };

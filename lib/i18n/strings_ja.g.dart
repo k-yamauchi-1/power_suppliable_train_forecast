@@ -57,6 +57,9 @@ class TranslationsJa with BaseTranslations<AppLocale, Translations> implements T
 	@override String stopsAt({required Object s}) => '${s}に停車';
 	@override String trainNo({required Object n}) => '${n}号';
 	@override String carNo({required Object n}) => '${n}\n号車';
+	@override String get dep => '発';
+	@override String get arv => '着';
+	@override String get stopsName => '駅名';
 	@override String get unfixed => '不定';
 	@override String atAllSeats({required Object p}) => '全席${p}％';
 	@override String onlyAtWindowSeats({required Object p}) => '窓側席のみ${p}％';
@@ -110,6 +113,9 @@ extension on TranslationsJa {
 			'stopsAt' => ({required Object s}) => '${s}に停車',
 			'trainNo' => ({required Object n}) => '${n}号',
 			'carNo' => ({required Object n}) => '${n}\n号車',
+			'dep' => '発',
+			'arv' => '着',
+			'stopsName' => '駅名',
 			'unfixed' => '不定',
 			'atAllSeats' => ({required Object p}) => '全席${p}％',
 			'onlyAtWindowSeats' => ({required Object p}) => '窓側席のみ${p}％',

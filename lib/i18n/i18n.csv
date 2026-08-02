@@ -19,6 +19,9 @@ destination,for $s,$s 行
 stopsAt,Stops at $s,$sに停車
 trainNo, No.$n,$n号
 carNo,car\n$n,$n\n号車
+dep,Dep.,発
+arv,Arv.,着
+stopsName,Stops,駅名
 unfixed,unfixed,不定
 atAllSeats,$p% at all seats,全席$p％
 onlyAtWindowSeats,$p% only at window seats,窓側席のみ$p％

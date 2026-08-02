@@ -68,15 +68,19 @@ abstract class TrainStop with _$TrainStop {
   const factory TrainStop({
     required String id,
     required int hour,
-    required int min
+    required int min,
+    @JsonKey(name: 'stop_min') @Default(0) int stopMin
   }) = _TrainStop;
 
   factory TrainStop.fromJson(Map<String, dynamic> json) =>
       _$TrainStopFromJson(json);
 
   int get dateMin => hour * 60 + min;
-  String get dispTime =>
-      '${hour.toString().padLeft(2, '0')}:${min.toString().padLeft(2, '0')}';
+  String _timeString(int h, int m) =>
+      '${h.toString().padLeft(2, '0')}:${m.toString().padLeft(2, '0')}';
+  String get dispTime => _timeString(hour, min);
+  String get dispArvTime =>
+      _timeString((dateMin - stopMin) ~/ 60, (dateMin - stopMin) % 60);
 
   List<String> validate(Map<String, Station> stations) => [
     if (!stations.containsKey(id)) 'id "$id" が stations に存在しません',

@@ -22,6 +22,17 @@ void main() {
       expect(stop2.dispTime, '12:34');
     });
 
+    test('dispArvTime subtracts stopMin and formats correctly', () {
+      const stop1 = TrainStop(id: 'OH01', hour: 6, min: 5, stopMin: 2);
+      expect(stop1.dispArvTime, '06:03');
+
+      const stop2 = TrainStop(id: 'OH01', hour: 10, min: 0, stopMin: 3);
+      expect(stop2.dispArvTime, '09:57');
+
+      const stop3 = TrainStop(id: 'OH01', hour: 12, min: 34, stopMin: 0);
+      expect(stop3.dispArvTime, '12:34');
+    });
+
     test('fromJson & toJson map correctly', () {
       final json = {'id': 'OH20', 'hour': 18, 'min': 45};
       final stop = TrainStop.fromJson(json);
@@ -30,7 +41,7 @@ void main() {
       expect(stop.hour, 18);
       expect(stop.min, 45);
 
-      expect(stop.toJson(), json);
+      expect(stop.toJson(), {'id': 'OH20', 'hour': 18, 'min': 45, 'stop_min': 0});
     });
   });
 
@@ -52,10 +63,8 @@ void main() {
     });
 
     test('stopsAt returns null if depID is not found or is the last stop', () {
-      // 存在しない駅
-      expect(stdTestTrain.stopsAt(depID: 'OH99'), isNull);
-      // 終着駅を発駅に指定
-      expect(stdTestTrain.stopsAt(depID: 'OH03'), isNull);
+      expect(stdTestTrain.stopsAt(depID: 'OH99'), isNull);  // 存在しない駅
+      expect(stdTestTrain.stopsAt(depID: 'OH03'), isNull);  // 終着駅を発駅に指定
     });
 
     test('stopsAt slices stops and returns Train if depID is valid and arvIDs is empty', () {

@@ -282,7 +282,7 @@ as int,
 /// @nodoc
 mixin _$TrainStop {
 
- String get id; int get hour; int get min;
+ String get id; int get hour; int get min;@JsonKey(name: 'stop_min') int get stopMin;
 /// Create a copy of TrainStop
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -295,16 +295,16 @@ $TrainStopCopyWith<TrainStop> get copyWith => _$TrainStopCopyWithImpl<TrainStop>
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is TrainStop&&(identical(other.id, id) || other.id == id)&&(identical(other.hour, hour) || other.hour == hour)&&(identical(other.min, min) || other.min == min));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is TrainStop&&(identical(other.id, id) || other.id == id)&&(identical(other.hour, hour) || other.hour == hour)&&(identical(other.min, min) || other.min == min)&&(identical(other.stopMin, stopMin) || other.stopMin == stopMin));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,hour,min);
+int get hashCode => Object.hash(runtimeType,id,hour,min,stopMin);
 
 @override
 String toString() {
-  return 'TrainStop(id: $id, hour: $hour, min: $min)';
+  return 'TrainStop(id: $id, hour: $hour, min: $min, stopMin: $stopMin)';
 }
 
 
@@ -315,7 +315,7 @@ abstract mixin class $TrainStopCopyWith<$Res>  {
   factory $TrainStopCopyWith(TrainStop value, $Res Function(TrainStop) _then) = _$TrainStopCopyWithImpl;
 @useResult
 $Res call({
- String id, int hour, int min
+ String id, int hour, int min,@JsonKey(name: 'stop_min') int stopMin
 });
 
 
@@ -332,11 +332,12 @@ class _$TrainStopCopyWithImpl<$Res>
 
 /// Create a copy of TrainStop
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? hour = null,Object? min = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? hour = null,Object? min = null,Object? stopMin = null,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,hour: null == hour ? _self.hour : hour // ignore: cast_nullable_to_non_nullable
 as int,min: null == min ? _self.min : min // ignore: cast_nullable_to_non_nullable
+as int,stopMin: null == stopMin ? _self.stopMin : stopMin // ignore: cast_nullable_to_non_nullable
 as int,
   ));
 }
@@ -422,10 +423,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  int hour,  int min)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  int hour,  int min, @JsonKey(name: 'stop_min')  int stopMin)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _TrainStop() when $default != null:
-return $default(_that.id,_that.hour,_that.min);case _:
+return $default(_that.id,_that.hour,_that.min,_that.stopMin);case _:
   return orElse();
 
 }
@@ -443,10 +444,10 @@ return $default(_that.id,_that.hour,_that.min);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  int hour,  int min)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  int hour,  int min, @JsonKey(name: 'stop_min')  int stopMin)  $default,) {final _that = this;
 switch (_that) {
 case _TrainStop():
-return $default(_that.id,_that.hour,_that.min);case _:
+return $default(_that.id,_that.hour,_that.min,_that.stopMin);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -463,10 +464,10 @@ return $default(_that.id,_that.hour,_that.min);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  int hour,  int min)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  int hour,  int min, @JsonKey(name: 'stop_min')  int stopMin)?  $default,) {final _that = this;
 switch (_that) {
 case _TrainStop() when $default != null:
-return $default(_that.id,_that.hour,_that.min);case _:
+return $default(_that.id,_that.hour,_that.min,_that.stopMin);case _:
   return null;
 
 }
@@ -478,12 +479,13 @@ return $default(_that.id,_that.hour,_that.min);case _:
 @JsonSerializable()
 
 class _TrainStop extends TrainStop {
-  const _TrainStop({required this.id, required this.hour, required this.min}): super._();
+  const _TrainStop({required this.id, required this.hour, required this.min, @JsonKey(name: 'stop_min') this.stopMin = 0}): super._();
   factory _TrainStop.fromJson(Map<String, dynamic> json) => _$TrainStopFromJson(json);
 
 @override final  String id;
 @override final  int hour;
 @override final  int min;
+@override@JsonKey(name: 'stop_min') final  int stopMin;
 
 /// Create a copy of TrainStop
 /// with the given fields replaced by the non-null parameter values.
@@ -498,16 +500,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _TrainStop&&(identical(other.id, id) || other.id == id)&&(identical(other.hour, hour) || other.hour == hour)&&(identical(other.min, min) || other.min == min));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _TrainStop&&(identical(other.id, id) || other.id == id)&&(identical(other.hour, hour) || other.hour == hour)&&(identical(other.min, min) || other.min == min)&&(identical(other.stopMin, stopMin) || other.stopMin == stopMin));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,hour,min);
+int get hashCode => Object.hash(runtimeType,id,hour,min,stopMin);
 
 @override
 String toString() {
-  return 'TrainStop(id: $id, hour: $hour, min: $min)';
+  return 'TrainStop(id: $id, hour: $hour, min: $min, stopMin: $stopMin)';
 }
 
 
@@ -518,7 +520,7 @@ abstract mixin class _$TrainStopCopyWith<$Res> implements $TrainStopCopyWith<$Re
   factory _$TrainStopCopyWith(_TrainStop value, $Res Function(_TrainStop) _then) = __$TrainStopCopyWithImpl;
 @override @useResult
 $Res call({
- String id, int hour, int min
+ String id, int hour, int min,@JsonKey(name: 'stop_min') int stopMin
 });
 
 
@@ -535,11 +537,12 @@ class __$TrainStopCopyWithImpl<$Res>
 
 /// Create a copy of TrainStop
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? hour = null,Object? min = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? hour = null,Object? min = null,Object? stopMin = null,}) {
   return _then(_TrainStop(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,hour: null == hour ? _self.hour : hour // ignore: cast_nullable_to_non_nullable
 as int,min: null == min ? _self.min : min // ignore: cast_nullable_to_non_nullable
+as int,stopMin: null == stopMin ? _self.stopMin : stopMin // ignore: cast_nullable_to_non_nullable
 as int,
   ));
 }

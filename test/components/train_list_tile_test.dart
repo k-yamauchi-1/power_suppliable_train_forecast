@@ -109,10 +109,12 @@ void main() {
         ));
 
         // 1. facility cardType bgColor check
-        final containerFinder = find.byType(Container).first;
-        final decoratedBox =
-            tester.widget<Container>(containerFinder).decoration as BoxDecoration;
-        expect(decoratedBox.color, CarType.gse.bgColor);
+        final materialFinder = find.descendant(
+          of: find.byType(TrainListTile),
+          matching: find.byType(Material)
+        );
+        final material = tester.widget<Material>(materialFinder);
+        expect(material.color, CarType.gse.bgColor);
 
         // 2. Fallback asset icon because asset binary is missing in tests
         // Pump twice to trigger and process asset error fallback
@@ -210,5 +212,34 @@ void main() {
         );
       }
     );
+  });
+
+  group('StoplistDialog', () {
+    testWidgets('opens StopListDialog when tile is tapped', (tester) async {
+      await tester.pumpWidget(createWidget());
+      await tester.pump();
+
+      expect(find.byType(Dialog), findsNothing);
+
+      // タイル中央 (駅名付近) をタップ
+      await tester.tap(find.text('はこね1号'));
+      await tester.pumpAndSettle();
+
+      // ダイアログが開いたことを確認
+      expect(find.byType(Dialog), findsOneWidget);
+      expect(find.text('10:00'), findsNWidgets(2)); // タイルとダイアログ内
+    });
+
+    testWidgets('shows explanation tooltip when ProbabilityIcon is tapped', (tester) async {
+      await tester.pumpWidget(createWidget());
+      await tester.pump();
+
+      // ProbabilityIcon をタップ
+      await tester.tap(find.byType(ProbabilityIcon));
+      await tester.pump();
+
+      // Tooltip メッセージ (explanation) が表示されること
+      expect(find.byType(Tooltip), findsOneWidget);
+    });
   });
 }

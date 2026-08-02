@@ -101,6 +101,15 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 	/// en: 'car\n$n'
 	String carNo({required Object n}) => 'car\n${n}';
 
+	/// en: 'Dep.'
+	String get dep => 'Dep.';
+
+	/// en: 'Arv.'
+	String get arv => 'Arv.';
+
+	/// en: 'Stops'
+	String get stopsName => 'Stops';
+
 	/// en: 'unfixed'
 	String get unfixed => 'unfixed';
 
@@ -199,6 +208,9 @@ extension on Translations {
 			'stopsAt' => ({required Object s}) => 'Stops at ${s}',
 			'trainNo' => ({required Object n}) => ' No.${n}',
 			'carNo' => ({required Object n}) => 'car\n${n}',
+			'dep' => 'Dep.',
+			'arv' => 'Arv.',
+			'stopsName' => 'Stops',
 			'unfixed' => 'unfixed',
 			'atAllSeats' => ({required Object p}) => '${p}% at all seats',
 			'onlyAtWindowSeats' => ({required Object p}) => '${p}% only at window seats',

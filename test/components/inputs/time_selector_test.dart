@@ -10,12 +10,7 @@ import 'package:power_suppliable_train_forecast/providers/local_storage.dart';
 class MockCond extends Cond {
   @override
   SearchCond build() {
-    final cond = const SearchCond(target: TargetDate.weekday, hourFrom: -1);
-    fromHours = [
-      const MapEntry(-1, '始発'),
-      ...List.generate(16, (i) => i + 7).map((h) => MapEntry(h, '$h時')),
-    ];
-    return cond;
+    return const SearchCond(target: TargetDate.weekday, hourFrom: -1);
   }
 }
 
@@ -47,7 +42,7 @@ void main() {
       expect(find.text('始発'), findsOneWidget);
 
       // Tap on dropdown to open menu
-      await tester.tap(find.byType(DropdownButton<MapEntry<int, String>>));
+      await tester.tap(find.byType(DropdownButton<int>));
       await tester.pumpAndSettle();
 
       await tester.tap(find.text('7時').last);

@@ -78,16 +78,16 @@ abstract class Service with _$Service {
     ) ? TimetableDate.holiday : TimetableDate.weekday;
     final regularTrains = (
       trains[timetableDate]?[_direction(cond)]?.values ?? []
-    ).where((t) => !t.exceptDates.contains(cond.target.date)).toList();
+    ).where((trn) => !trn.exceptDates.contains(cond.target.date)).toList();
     final extraTrains = (
       trains[TimetableDate.extra]?[_direction(cond)]?.values ?? []
-    ).where((t) => t.exceptDates.contains(cond.target.date)).toList();
+    ).where((trn) => trn.exceptDates.contains(cond.target.date)).toList();
 
     return (regularTrains + extraTrains).map(
-      (t) => t.stopsAt(depID: cond.depID, arvIDs: cond.arvIDs)
-    ).nonNulls.where(
-      (t) => cond.matchTime(hour: t.stops.first.hour, min: t.stops.first.min)
-    ).toList()..sort(
+      (trn) => trn.stopsAt(depID: cond.depID, arvIDs: cond.arvIDs)
+    ).nonNulls.where((trn) => cond.matchTime(
+      hour: trn.stops.first.hour, min: trn.stops.first.min
+    )).toList()..sort(
       (a, b) => (a.stops.first.dateMin).compareTo(b.stops.first.dateMin)
     );
   }

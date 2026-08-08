@@ -18,7 +18,7 @@ class ArvStationsSelector extends ConsumerWidget {
     final safeAreaHeight = mediaQuery.size.height -
         (mediaQuery.padding.top + mediaQuery.padding.bottom);
 
-    return reachables.isEmpty ? SizedBox.shrink() : ExpansionTile(
+    return reachables.isEmpty ? const SizedBox.shrink() : ExpansionTile(
       title: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,

@@ -24,9 +24,8 @@ class DirectionSelector extends ConsumerWidget {
         items: destinations.entries.map(
           (e) => DropdownMenuItem(value: e.key, child: Text(e.value))
         ).toList(),
-        onChanged: (v) {
-          ref.read(condProvider.notifier).updateProp(direction: v, arvIDs: []);
-        },
+        onChanged: (v) => ref.read(condProvider.notifier)
+            .updateProp(direction: v, arvIDs: []),
         decoration: const InputDecoration(
           labelText: '方面', isDense: true, border: OutlineInputBorder()
         )

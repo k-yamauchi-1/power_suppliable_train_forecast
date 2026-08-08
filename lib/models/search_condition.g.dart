@@ -76,7 +76,7 @@ final class CondProvider extends $NotifierProvider<Cond, SearchCond> {
   }
 }
 
-String _$condHash() => r'b5b62d5d05cc9f15e166407df0c4703c5daf956c';
+String _$condHash() => r'821a982c78a5cc8e1456520a55074a801690fc07';
 
 abstract class _$Cond extends $Notifier<SearchCond> {
   SearchCond build();

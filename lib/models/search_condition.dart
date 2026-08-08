@@ -53,7 +53,7 @@ abstract class SearchCond with _$SearchCond {
     );
   }
 
-  List<MapEntry<int, String>> get _fromHours => [
+  List<MapEntry<int, String>> get timeOptions => [
     MapEntry(-1, target == TargetDate.today ? '現在' : '始発'),
     ...List.generate(_endHour - 1 - _stHour, (i) => i + _stHour + 1).where(
       (h) => h > (target == TargetDate.today ? DateTime.now().hour : _stHour)
@@ -63,13 +63,8 @@ abstract class SearchCond with _$SearchCond {
 
 @riverpod
 class Cond extends _$Cond {
-  List<MapEntry<int, String>> fromHours = [];
-
   @override
-  SearchCond build() {
-    listenSelf((_, n) => fromHours = n._fromHours);
-    return ref.read(localStorageProvider.notifier).initCond;
-  }
+  SearchCond build() => ref.read(localStorageProvider.notifier).initCond;
 
   void updateProp({
     String? depID, Direction? direction, List<String>? arvIDs,

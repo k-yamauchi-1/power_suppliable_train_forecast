@@ -105,9 +105,9 @@ void main() {
       // Listen to condProvider to trigger its build
       SearchCond condState() => container.read(condProvider);
       expect(condState().depID, 'OH01'); // Default depID
+      expect(condState().timeOptions, isNotEmpty);
 
       final notifier = container.read(condProvider.notifier);
-      expect(notifier.fromHours, isNotEmpty);
 
       // updateProp
       notifier.updateProp(depID: 'OH02', direction: Direction.down);

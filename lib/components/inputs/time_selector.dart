@@ -8,17 +8,17 @@ class TimeSelector extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final notifier = ref.read(condProvider.notifier);
+    final timeOptions = ref.watch(condProvider).timeOptions;
 
-    return DropdownButton<MapEntry<int, String>>(
-      value: notifier.fromHours.firstWhere(
-        (t) => t.key == ref.watch(condProvider).hourFrom,
-        orElse: () => notifier.fromHours.first
-      ),
-      items: notifier.fromHours.map(
-        (e) => DropdownMenuItem(value: e, child: Text(e.value))
+    return DropdownButton<int>(
+      value: timeOptions.firstWhere(
+        (h) => h.key == ref.read(condProvider).hourFrom,
+        orElse: () => timeOptions.first
+      ).key,
+      items: timeOptions.map(
+        (e) => DropdownMenuItem<int>(value: e.key, child: Text(e.value))
       ).toList(),
-      onChanged: (v) => notifier.updateProp(hourFrom: v?.key),
+      onChanged: (v) => ref.read(condProvider.notifier).updateProp(hourFrom: v),
       isDense: true
     );
   }

@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:power_suppliable_train_forecast/components/app_icons/app_icon_base.dart';
+import 'package:power_suppliable_train_forecast/i18n/strings.g.dart';
 
 void main() {
   group('AppIconBase', () {
+    setUp(() async => await LocaleSettings.setLocale(AppLocale.ja));
+
     testWidgets('renders default properties correctly', (tester) async {
       await tester.pumpWidget(
         const MaterialApp(home: Scaffold(body: AppIconBase()))

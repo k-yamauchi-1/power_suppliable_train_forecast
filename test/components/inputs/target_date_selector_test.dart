@@ -4,6 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:power_suppliable_train_forecast/components/inputs/target_date_selector.dart';
+import 'package:power_suppliable_train_forecast/i18n/strings.g.dart';
 import 'package:power_suppliable_train_forecast/models/search_condition.dart';
 import 'package:power_suppliable_train_forecast/providers/local_storage.dart';
 
@@ -12,6 +13,7 @@ void main() {
     late SharedPreferences sharedPrefs;
 
     setUp(() async {
+      await LocaleSettings.setLocale(AppLocale.ja);
       SharedPreferences.setMockInitialValues({});
       sharedPrefs = await SharedPreferences.getInstance();
     });

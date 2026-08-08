@@ -4,6 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:power_suppliable_train_forecast/components/inputs/arv_stations_selector.dart';
+import 'package:power_suppliable_train_forecast/i18n/strings.g.dart';
 import 'package:power_suppliable_train_forecast/models/search_condition.dart';
 import 'package:power_suppliable_train_forecast/models/service.dart';
 import 'package:power_suppliable_train_forecast/models/station.dart';
@@ -16,6 +17,7 @@ void main() {
     late Service mockServiceWithReachables;
 
     setUp(() async {
+      await LocaleSettings.setLocale(AppLocale.ja);
       SharedPreferences.setMockInitialValues({});
       sharedPrefs = await SharedPreferences.getInstance();
 
@@ -86,11 +88,11 @@ void main() {
       await tester.tap(find.text('停車駅で絞込み'));
       await tester.pumpAndSettle();
 
-      // Find FilterChip for "町田 450円"
+      // Find FilterChip for "町田 ￥450"
       final chipFinder = find.byType(FilterChip);
       expect(chipFinder, findsOneWidget);
       expect(find.textContaining('町田'), findsOneWidget);
-      expect(find.textContaining('450円'), findsOneWidget);
+      expect(find.textContaining('￥450'), findsOneWidget);
 
       // Currently, it is unselected. Let's tap it.
       await tester.tap(chipFinder);

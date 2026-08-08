@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:power_suppliable_train_forecast/components/bottom_bar.dart';
 import 'package:power_suppliable_train_forecast/components/dialogs/app_info_dialog.dart';
 import 'package:power_suppliable_train_forecast/components/dialogs/saved_cond_dialog.dart';
+import 'package:power_suppliable_train_forecast/i18n/strings.g.dart';
 import 'package:power_suppliable_train_forecast/providers/local_storage.dart';
 
 void main() {
@@ -13,6 +14,7 @@ void main() {
     late SharedPreferences sharedPrefs;
 
     setUp(() async {
+      await LocaleSettings.setLocale(AppLocale.ja);
       SharedPreferences.setMockInitialValues({});
       sharedPrefs = await SharedPreferences.getInstance();
     });

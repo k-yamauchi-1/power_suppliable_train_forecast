@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:power_suppliable_train_forecast/i18n/strings.g.dart';
 import 'package:power_suppliable_train_forecast/models/facility.dart';
 
 void main() {
+  setUp(() async => await LocaleSettings.setLocale(AppLocale.ja));
+
   group('CarType', () {
     test('dispName returns expected values', () {
       expect(CarType.gse.dispName, 'GSE');
@@ -84,8 +87,8 @@ void main() {
     });
 
     test('explanation returns correct message', () {
-      expect(Probability.a95.explanation, '全席コンセント確率: 95％');
-      expect(Probability.w80.explanation, '窓側席コンセント確率: 80％');
+      expect(Probability.a95.explanation, '全席95％');
+      expect(Probability.w80.explanation, '窓側席のみ80％');
 
       expect((null as Probability?).explanation, '');
     });

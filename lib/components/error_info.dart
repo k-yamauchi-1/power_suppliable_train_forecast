@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
-const prodMessage = 'ただいまサービスの提供を停止しております。\n'
-'メンテナンス情報は下方「最新情報」をご確認下さい。';
+import '../../i18n/strings.g.dart';
 
 class ErrInfoWidget extends StatelessWidget {
   final String? message;
@@ -15,7 +14,7 @@ class ErrInfoWidget extends StatelessWidget {
     const Icon(Icons.error, size: 48, color: Colors.red),
     const Gap(4),
     Text(
-      message != null ? 'エラー: $message' : prodMessage,
+      message != null ? '${t.error}: $message' : t.prodErrMsg,
       textAlign: TextAlign.center
     ),
     if ((detail ?? '').isNotEmpty)  Padding(

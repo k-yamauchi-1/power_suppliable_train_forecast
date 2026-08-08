@@ -1,0 +1,44 @@
+key,en,ja
+searchTrain,Search Train,列車検索
+today,Today,本日
+nextDay,Tomorrow,明日
+weekday,Weekdays,平日
+holiday,Holidays,土休日
+noForecast,No forecast,予報なし
+noForecastComplement,Probabilities based solely on ratios of fleet available outlet,充電可能な車両の比率のみに基づく確率表示です
+fromNowOn,From now on,現在
+allDay,All day,始発
+timeOption,$h or later,$h時
+departFrom,Depart from $s\n,$s発
+departureStation,Departure station,発駅
+toward,Toward $s,$s方面
+gettingOffAt,Getting off at ,下車駅：
+filterByStoppingStations,Filter by stopping stations,停車駅で絞込み
+anyOfSelectedStations,Any of selected stations,選択した駅のいずれか
+destination,for $s,$s 行
+stopsAt,Stops at $s,$sに停車
+trainNo, No.$n,$n号
+carNo,car\n$n,$n\n号車
+unfixed,unfixed,不定
+atAllSeats,$p% at all seats,全席$p％
+onlyAtWindowSeats,$p% only at window seats,窓側席のみ$p％
+probability,Probabilty of power outlet available,コンセント確率: 
+noTrainsMatched,No trains matched,条件に一致する列車はありません
+saveSearch,Save search,検索条件を保存
+savedSuccesfully,Saved succesfully,保存しました
+savedSearches,Saved searches,保存した検索条件
+setAsStartupSearch,Set as startup search,起動時の条件に設定
+infoAndContact,Latest info\n & Contact,最新情報\nお問合せ
+notice,Notice,ご利用にあたって
+termAndPolicy,Term and Policy,利用規約・プライバシーポリシー
+agreeToTheDisclaimerAndTermsOfUse,"Agree to the disclaimer and terms of use, ",免責事項・利用規約に同意して
+startUsing,Start using,利用開始
+version,Version,バージョン
+releaseInfo,Release info,リリース情報
+licenses,Licenses,ライセンス
+separator,", ",・
+or,or,または
+close,close,閉じる
+delete,Delete,削除
+error,Error,エラー
+prodErrMsg,"Service is currently suspended.\nPlease check ""Latest info"" for maintenance updates.",ただいまサービスの提供を停止しております。\nメンテナンス情報は「最新情報」をご確認ください。

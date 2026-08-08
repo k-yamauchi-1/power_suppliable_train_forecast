@@ -4,6 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:power_suppliable_train_forecast/components/inputs/direction_selector.dart';
+import 'package:power_suppliable_train_forecast/i18n/strings.g.dart';
 import 'package:power_suppliable_train_forecast/models/search_condition.dart';
 import 'package:power_suppliable_train_forecast/models/service.dart';
 import 'package:power_suppliable_train_forecast/models/station.dart';
@@ -15,6 +16,7 @@ void main() {
     late Service mockService;
 
     setUp(() async {
+      await LocaleSettings.setLocale(AppLocale.ja);
       SharedPreferences.setMockInitialValues({});
       sharedPrefs = await SharedPreferences.getInstance();
 
@@ -81,7 +83,7 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.byType(DropdownButtonFormField<Direction>), findsNothing);
-      expect(find.text('方面: 小田原方面'), findsOneWidget);
+      expect(find.text(t.toward(s: '小田原方面')), findsOneWidget);
     });
 
     testWidgets('renders DropdownButtonFormField when there are 2 or more destinations and allows switching', (tester) async {

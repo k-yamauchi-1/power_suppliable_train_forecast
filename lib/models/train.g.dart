@@ -8,6 +8,7 @@ part of 'train.dart';
 
 _Train _$TrainFromJson(Map<String, dynamic> json) => _Train(
   name: json['name'] as String,
+  intl: json['intl'] as String? ?? '',
   number: (json['number'] as num).toInt(),
   facilityId: json['facility_id'] as String,
   stops: (json['stops'] as List<dynamic>)
@@ -22,6 +23,7 @@ _Train _$TrainFromJson(Map<String, dynamic> json) => _Train(
 
 Map<String, dynamic> _$TrainToJson(_Train instance) => <String, dynamic>{
   'name': instance.name,
+  'intl': instance.intl,
   'number': instance.number,
   'facility_id': instance.facilityId,
   'stops': instance.stops,

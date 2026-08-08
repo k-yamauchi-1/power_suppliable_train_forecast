@@ -3,10 +3,13 @@ import 'package:flutter_test/flutter_test.dart';
 
 import 'package:power_suppliable_train_forecast/components/app_icons/app_icon_base.dart';
 import 'package:power_suppliable_train_forecast/components/app_icons/probability_icon.dart';
+import 'package:power_suppliable_train_forecast/i18n/strings.g.dart';
 import 'package:power_suppliable_train_forecast/models/facility.dart';
 
 void main() {
   group('ProbabilityIcon', () {
+    setUp(() async => await LocaleSettings.setLocale(AppLocale.ja));
+
     testWidgets('displays correct info and tooltip for w80 (partial seats)', (tester) async {
       await tester.pumpWidget(const MaterialApp(home: Scaffold(
         body: ProbabilityIcon(probability: Probability.w80, size: 50)

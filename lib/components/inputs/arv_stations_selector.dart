@@ -2,14 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../i18n/strings.g.dart';
 import '../../models/service.dart';
 import '../../models/search_condition.dart';
+import '../../providers/app_locale.dart';
 
 class ArvStationsSelector extends ConsumerWidget {
   const ArvStationsSelector({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    ref.watch(appLocaleProvider);
     final arvIDs = ref.watch(condProvider).arvIDs;
     final service = ref.watch(serviceProvider).value;
     final reachables = service?.reachables(ref.watch(condProvider)) ?? [];
@@ -23,11 +26,11 @@ class ArvStationsSelector extends ConsumerWidget {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('停車駅で絞込み', style: TextStyle(fontSize: 14)),
+          Text(t.filterByStoppingStations, style: const TextStyle(fontSize: 14)),
           Text(
-            '${arvIDs.isEmpty ? '選択した駅のいずれか' : arvIDs.map(
-              (id) => service?.stations[id]?.name
-            ).join(' または ')}に停車',
+            t.stopsAt(s: arvIDs.isNotEmpty ? arvIDs.map(
+              (id) => service?.stations[id]?.lName
+            ).nonNulls.join(' ${t.or} ') : t.anyOfSelectedStations), 
             style: TextStyle(fontSize: 10.5, color: Colors.grey.shade400)
           )
         ]
@@ -52,7 +55,7 @@ class ArvStationsSelector extends ConsumerWidget {
                       text: rcbl.name, style: const TextStyle(fontSize: 12)
                     ),
                     TextSpan(
-                      text: ' ${rcbl.surcharge}円',
+                      text: ' ￥${rcbl.surcharge}',
                       style: const TextStyle(fontSize: 10, color: Colors.grey)
                     )
                   ]))

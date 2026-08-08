@@ -8,6 +8,7 @@ import 'package:url_launcher_platform_interface/link.dart';
 import 'package:url_launcher_platform_interface/url_launcher_platform_interface.dart';
 
 import 'package:power_suppliable_train_forecast/components/dialogs/app_info_dialog.dart';
+import 'package:power_suppliable_train_forecast/i18n/strings.g.dart';
 import 'package:power_suppliable_train_forecast/providers/local_storage.dart';
 
 class MockUrlLauncher extends UrlLauncherPlatform with MockPlatformInterfaceMixin {
@@ -31,7 +32,8 @@ void main() {
     late SharedPreferences sharedPrefs;
     late MockUrlLauncher mockUrlLauncher;
 
-    setUp(() {
+    setUp(() async {
+      await LocaleSettings.setLocale(AppLocale.ja);
       mockUrlLauncher = MockUrlLauncher();
       UrlLauncherPlatform.instance = mockUrlLauncher;
     });
@@ -120,6 +122,7 @@ void main() {
     });
 
     testWidgets('external links are clickable and invoke correct URLs', (tester) async {
+      await LocaleSettings.setLocale(AppLocale.ja);
       SharedPreferences.setMockInitialValues({'init': 0}); // already initialized
       sharedPrefs = await SharedPreferences.getInstance();
 
@@ -129,8 +132,8 @@ void main() {
       await tester.tap(find.text('Show'));
       await tester.pumpAndSettle();
 
-      // Click Terms URL
-      await tester.tap(find.text('利用規約・プライバシーポリシー'));
+      // Click Terms URL (ja)
+      await tester.tap(find.text(t.termAndPolicy));
       await tester.pumpAndSettle();
       expect(mockUrlLauncher.launchedUrl, 'https://pwr-suppliable-train-forecast.web.app');
 
@@ -147,6 +150,24 @@ void main() {
           _ => 'https://example.com/'
         },
       );
+    });
+
+    testWidgets('Terms URL points to index_en.html for non-ja locales', (tester) async {
+      await LocaleSettings.setLocale(AppLocale.en);
+      SharedPreferences.setMockInitialValues({'init': 0});
+      sharedPrefs = await SharedPreferences.getInstance();
+
+      await tester.pumpWidget(createWidgetUnderTest(sharedPrefs));
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.text('Show'));
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.text(t.termAndPolicy));
+      await tester.pumpAndSettle();
+      expect(mockUrlLauncher.launchedUrl, 'https://pwr-suppliable-train-forecast.web.app/index_en.html');
+
+      await LocaleSettings.setLocale(AppLocale.ja);
     });
   });
 }

@@ -12,13 +12,16 @@ import '../components/error_info.dart';
 import '../components/inputs/arv_stations_selector.dart';
 import '../components/inputs/cond_save_button.dart';
 import '../components/inputs/direction_selector.dart';
+import '../components/inputs/language_toggle.dart';
 import '../components/inputs/saved_cond_list_button.dart';
 import '../components/inputs/station_input.dart';
 import '../components/inputs/target_date_selector.dart';
 import '../components/inputs/time_selector.dart';
 import '../components/train_list_tile.dart';
+import '../i18n/strings.g.dart';
 import '../models/search_condition.dart';
 import '../models/service.dart';
+import '../providers/app_locale.dart';
 import '../providers/local_storage.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
@@ -43,20 +46,21 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    ref.watch(appLocaleProvider);
     final initialized = ref.watch(localStorageProvider).initKey != null;
     final service = ref.watch(serviceProvider);
     final cond = ref.watch(condProvider);
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('列車検索'),
+        title: Text(t.searchTrain),
         toolbarHeight: 40,
         backgroundColor: const Color(0xFFF05322),
         foregroundColor: Colors.white,
         actions: [
           IconButton(
             icon: const Icon(Icons.info),
-            tooltip: '本アプリについて',
+            tooltip: t.notice,
             onPressed: () async => await showDialog(
               context: context,
               builder: (context) => const AppInfoDialog()
@@ -75,7 +79,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               children: [
                 const TargetDateSelector(),
                 const Gap(4),
-                const Row(children: [Gap(8), TimeSelector(), Text('以降')])
+                Row(children: [
+                  const Gap(8),
+                  const TimeSelector(),
+                  if (t.$meta.locale == AppLocale.ja)  Text('以降')
+                ])
               ]
             ),
             const Gap(16),
@@ -107,11 +115,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         ))
         else if (service.hasValue && initialized) () {
           final trains = service.value?.getTrains(cond) ?? [];
-          return trains.isEmpty ? const Padding(
-            padding: EdgeInsetsGeometry.symmetric(vertical: 8),
+          return trains.isEmpty ? Padding(
+            padding: const EdgeInsetsGeometry.symmetric(vertical: 8),
             child: Center(child: Text(
-              '条件に一致する列車はありません',
-              style: TextStyle(color: Colors.grey)
+              t.noTrainsMatched,
+              style: const TextStyle(color: Colors.grey)
             ))
           ) : Expanded(child: ListView.builder(
             itemCount: trains.length,
@@ -124,7 +132,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       bottomNavigationBar: SafeArea(child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
         child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-          const Spacer(),
+          const LanguageToggle(),
           ElevatedButton(
             onPressed: () => launchUrl(Uri.parse('https://x.com/pwrSupplyTrnApp')),
             style: ElevatedButton.styleFrom(
@@ -137,7 +145,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             child: Row(mainAxisSize: MainAxisSize.min, children: [
               const FaIcon(FontAwesomeIcons.xTwitter, size: 16),
               const Gap(6),
-              Text('最新情報\nお問合せ', style: const TextStyle(
+              Text(t.infoAndContact, style: const TextStyle(
                 fontSize: 10, height: 1.1
               ))
             ])

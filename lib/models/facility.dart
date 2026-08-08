@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import '../../i18n/strings.g.dart';
 import 'validate_helpers.dart';
 
 part 'facility.freezed.dart';
@@ -13,7 +14,7 @@ enum CarType {
   String get dispName => switch (this) {
     CarType.exeAlpha => 'EXEα',
     CarType.exeEither => 'EXE/\nEXEα',
-    CarType.unfixed => '不定',
+    CarType.unfixed => t.unfixed,
     _ => name.toUpperCase()
   };
 
@@ -44,7 +45,7 @@ extension NullableProbabilityExtension on Probability? {
     allSeats ? Colors.deepOrange : Colors.lightBlue
   );
   String get explanation => this == null ? '' : (
-    allSeats ? '全席コンセント確率: $asStr％' : '窓側席コンセント確率: $asStr％'
+    allSeats ? t.atAllSeats(p: asStr) : t.onlyAtWindowSeats(p: asStr)  // 「コンセント確率: 」
   );
 }
 

@@ -1,6 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../i18n/strings.g.dart';
 import '../providers/local_storage.dart';
 import 'station.dart';
 
@@ -10,11 +11,19 @@ part 'search_condition.g.dart';
 const int _stHour = 6;
 const int _endHour = 23;
 
-enum TargetDate {
-  today('本日'), nextDay('明日'), weekday('平日'), holiday('土休日');
+List<String> get daysOfWeek => t.$meta.locale == AppLocale.ja
+    ? ['月', '火', '水', '木', '金', '土', '日']
+    : ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
-  const TargetDate(this.name);
-  final String name;
+enum TargetDate {
+  today, nextDay, weekday, holiday;
+
+  String get label => switch (this) {
+    TargetDate.today => t.today,
+    TargetDate.nextDay => t.nextDay,
+    TargetDate.weekday => t.weekday,
+    TargetDate.holiday => t.holiday,
+  };
 
   bool get _isGeneral =>
       this == TargetDate.weekday || this == TargetDate.holiday;
@@ -24,11 +33,9 @@ enum TargetDate {
   bool get isHoliday =>
       this == TargetDate.holiday || (date?.weekday ?? 0) >= 6;
 
-  String get note => _isGeneral ? '予報なし' : ' ${date!.month}/${
-    date!.day.toString().padLeft(2, '0')
-  }(${['月', '火', '水', '木', '金', '土', '日'][date!.weekday - 1]})';
-  String get complement =>
-      _isGeneral ? '充電可能な車両の比率のみに基づく確率表示です' : '';
+  String get note => _isGeneral ? t.noForecast :
+      ' ${date!.month}/${date!.day}(${daysOfWeek[date!.weekday - 1]})';
+  String get complement => _isGeneral ? t.noForecastComplement : '';
 }
 
 @freezed
@@ -54,10 +61,10 @@ abstract class SearchCond with _$SearchCond {
   }
 
   List<MapEntry<int, String>> get timeOptions => [
-    MapEntry(-1, target == TargetDate.today ? '現在' : '始発'),
+    MapEntry(-1, target == TargetDate.today ? t.fromNowOn : t.allDay),
     ...List.generate(_endHour - 1 - _stHour, (i) => i + _stHour + 1).where(
       (h) => h > (target == TargetDate.today ? DateTime.now().hour : _stHour)
-    ).map((h) => MapEntry(h, '$h時'))
+    ).map((h) => MapEntry(h, t.timeOption(h: h)))
   ];
 }
 

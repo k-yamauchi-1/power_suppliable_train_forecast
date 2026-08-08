@@ -12,6 +12,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'components/app_icons/splash_icon.dart';
+import 'i18n/strings.g.dart';
 import 'providers/crashlytics_observer.dart';
 import 'providers/local_storage.dart';
 import 'screens/home_screen.dart';
@@ -21,6 +22,7 @@ import 'firebase_options.dart';
 void main() {
   runZonedGuarded(() {
     WidgetsFlutterBinding.ensureInitialized();
+    LocaleSettings.useDeviceLocale();
     SystemChrome.setPreferredOrientations([  // 画面向きを縦に固定
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown
@@ -96,7 +98,7 @@ class _PowerSupliableTrainAppState extends State<PowerSupliableTrainApp> {
   ) : ProviderScope(
     observers: const [CrashlyticsProviderObserver()],
     overrides: [sharedPreferencesProvider.overrideWithValue(_prefs!)],
-    child: MaterialApp(
+    child: TranslationProvider(child: MaterialApp(
       title: 'ロマンスカー充電コンセント予報',
       theme: ThemeData(
         textTheme: GoogleFonts.notoSansJpTextTheme(Theme.of(context).textTheme),
@@ -104,6 +106,6 @@ class _PowerSupliableTrainAppState extends State<PowerSupliableTrainApp> {
         useMaterial3: true
       ),
       home: const HomeScreen()
-    )
+    ))
   );
 }

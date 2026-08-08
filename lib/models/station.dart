@@ -1,6 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import '../i18n/strings.g.dart';
 import '../string_normalizer.dart';
 import 'validate_helpers.dart';
 
@@ -14,6 +15,11 @@ Object? _readDestinations(Map map, String key) => {
   'up': map['up_dest'] as String?,
 }..removeWhere((_, v) => v == null);
 
+Object? _readDestinationsIntl(Map map, String key) => {
+  'down': map['down_intl'] as String?,
+  'up': map['up_intl'] as String?,
+}..removeWhere((_, v) => v == null);
+
 @freezed
 abstract class Station with _$Station {
   const Station._();
@@ -23,10 +29,16 @@ abstract class Station with _$Station {
     required String alias,
     required String intl,
     @JsonKey(readValue: _readDestinations)
-    @Default({}) Map<Direction, String> destinations
+    @Default({}) Map<Direction, String> destinations,
+    @JsonKey(readValue: _readDestinationsIntl)
+    @Default({}) Map<Direction, String> destinationsIntl
   }) = _Station;
 
   factory Station.fromJson(Map<String, dynamic> json) => _$StationFromJson(json);
+
+  String get lName => t.$meta.locale == AppLocale.ja ? name : intl;
+  Map<Direction, String> get lDestinations =>
+      t.$meta.locale == AppLocale.ja ? destinations : destinationsIntl;
 
   bool matches(String q) => (
     name.normalize().contains(q.normalize()) ||

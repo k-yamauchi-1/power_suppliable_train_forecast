@@ -1,0 +1,8 @@
+# build.yaml
+targets:
+  $default:
+    builders:
+      slang_build_runner:
+        options:
+          input_file_pattern: i18n.csv
+          input_directory: lib/i18n

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import '../../i18n/strings.g.dart';
 import 'facility.dart';
 import 'station.dart';
 import 'validate_helpers.dart';
@@ -15,6 +16,7 @@ abstract class Train with _$Train {
 
   const factory Train({
     required String name,
+    @Default('') String intl,
     required int number,
     @JsonKey(name: 'facility_id') required String facilityId,
     required List<TrainStop> stops,
@@ -23,7 +25,9 @@ abstract class Train with _$Train {
 
   factory Train.fromJson(Map<String, dynamic> json) => _$TrainFromJson(json);
 
-  String get dispName => '$name$number号';
+  String get dispName => '${
+    t.$meta.locale == AppLocale.ja || intl.isEmpty ? name : intl
+  }${t.trainNo(n: number)}';
 
   Train? stopsAt({required String depID, List<String> arvIDs = const []}) {
     final sorted = [...stops]..sort((a, b) => a.dateMin.compareTo(b.dateMin));

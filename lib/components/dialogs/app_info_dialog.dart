@@ -8,7 +8,33 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../i18n/strings.g.dart';
+import '../../providers/app_locale.dart';
 import '../../providers/local_storage.dart';
+import '../inputs/language_toggle.dart';
+
+const disclaimerJa = '''【免責事項】
+このアプリは、小田急電鉄株式会社や関連企業（以下「公式」）とは無関係な個人が
+独自の調査を基に小田急ロマンスカーの列車毎の客席充電設備（コンセント）の有無を予測し、提供するアプリです。
+本アプリについての問合せは必ず運営者個人宛にお送りください。公式に問合せることは固くお断りします。
+
+情報の正確性には最善を期しておりますが、あくまで一個人による運営のため限度がありますことご容赦ください。
+特に、独自提供情報である充電の可否についてはあくまで「予報」であり、なんら正確性を担保するものではありません。
+また突発的なダイヤ乱れや運休にも対応しておりません。あくまでダイヤ通りだった場合の列車情報・充電可否予測になります。
+リアルタイムの運行状況は公式提供の各種最新情報をご確認ください。
+
+本アプリの利用にあたっては以上を了承の上で各利用者がその判断・責任の下で利用し、その結果生じた不利益・損害について提供者は一切の責任を負わないものとします。''';
+
+const disclaimerEn = '''【Disclaimer】
+This app is provided by an individual unaffiliated with Odakyu Electric Railway Co., Ltd. or its affiliates (hereinafter referred to as "the Official Entity"). It offers predictions regarding the availability of in-seat charging outlets for specific Odakyu Romancecar trains, based on the developer's own independent research.
+Please direct any inquiries regarding this app solely to the individual operator; do not contact the Official Entity.
+
+While every effort has been made to ensure the accuracy of the information, please understand that there are limitations due to the app being operated by a single individual.
+In particular, the information regarding charging availability is based on independent research and serves only as a "forecast"; its accuracy is not guaranteed.
+Furthermore, the app does not account for sudden schedule disruptions or service suspensions; the provided train information and charging availability predictions assume the train is running according to the standard schedule.
+Please check the latest information provided by the Official Entity for real-time service status.
+
+Users utilize this app at their own discretion and risk, acknowledging the above terms; the provider assumes no liability for any disadvantages or damages arising from the use of this app.''';
 
 class AppInfoDialog extends HookConsumerWidget {
   const AppInfoDialog({super.key});
@@ -23,6 +49,7 @@ class AppInfoDialog extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    ref.watch(appLocaleProvider);
     final storage = ref.read(localStorageProvider.notifier);
     final checkAgree = useState<bool>(storage.initialized);
 
@@ -35,16 +62,15 @@ class AppInfoDialog extends HookConsumerWidget {
       title: SizedBox(width: double.infinity, child: Stack(
         alignment: Alignment.center,
         children: [
-          Center(child: Text(
-            'ご利用にあたって',
-            style: TextStyle(fontSize: 17.5, fontWeight: FontWeight.bold)
-          )),
+          Center(child: Text(t.notice, style: const TextStyle(
+            fontSize: 17.5, fontWeight: FontWeight.bold
+          ))),
           if (storage.initialized)  Align(
             alignment: Alignment.centerRight,
             child: IconButton(
               icon: const Icon(Icons.close),
               visualDensity: VisualDensity.compact,
-              tooltip: '閉じる',
+              tooltip: t.close,
               onPressed: () => Navigator.of(context).pop()
             )
           )
@@ -54,27 +80,17 @@ class AppInfoDialog extends HookConsumerWidget {
         Flexible(child: Container(
           color: Colors.grey.shade100,
           padding: const EdgeInsets.symmetric(horizontal: 12),
-          child: SingleChildScrollView(child: const Text(
-            '''【免責事項】
-このアプリは、小田急電鉄株式会社や関連企業（以下「公式」）とは無関係な個人が
-独自の調査を基に小田急ロマンスカーの列車毎の客席充電設備（コンセント）の有無を予測し、提供するアプリです。
-本アプリについての問合せは必ず運営者個人宛にお送りください。公式に問合せることは固くお断りします。
-
-情報の正確性には最善を期しておりますが、あくまで一個人による運営のため限度がありますことご容赦ください。
-特に、独自提供情報である充電の可否についてはあくまで「予報」であり、なんら正確性を担保するものではありません。
-また突発的なダイヤ乱れや運休にも対応しておりません。あくまでダイヤ通りだった場合の列車情報・充電可否予測になります。
-リアルタイムの運行状況は公式提供の各種最新情報をご確認ください。
-
-本アプリの利用にあたっては以上を了承の上で各利用者がその判断・責任の下で利用し、その結果生じた不利益・損害について提供者は一切の責任を負わないものとします。''',
-          style: TextStyle(fontSize: 12.8),
-        )))),
+          child: SingleChildScrollView(child: Text(
+            t.$meta.locale == AppLocale.ja ? disclaimerJa : disclaimerEn,
+            style: TextStyle(fontSize: 12.8)
+          ))
+        )),
         const Gap(8),
-        _linkText(
-          '利用規約・プライバシーポリシー',
-          onTap: () async => await launchUrl(
-            Uri.parse('https://pwr-suppliable-train-forecast.web.app')
-          )
-        )
+        _linkText(t.termAndPolicy, onTap: () async => await launchUrl(
+          Uri.parse(LocaleSettings.currentLocale.languageCode == 'ja'
+              ? 'https://pwr-suppliable-train-forecast.web.app'
+              : 'https://pwr-suppliable-train-forecast.web.app/index_en.html')
+        ))
       ]),
       actionsAlignment: MainAxisAlignment.center,
       actions: [
@@ -86,7 +102,7 @@ class AppInfoDialog extends HookConsumerWidget {
                 value: checkAgree.value,
                 onChanged: (v) => checkAgree.value = v ?? false
               ),
-              Text('免責事項・利用規約に同意して', style: TextStyle(
+              Text(t.agreeToTheDisclaimerAndTermsOfUse, style: TextStyle(
                 color: checkAgree.value ? null : Colors.grey, fontSize: 14
               ))
             ]),
@@ -99,27 +115,29 @@ class AppInfoDialog extends HookConsumerWidget {
               if (context.mounted)  Navigator.of(context).pop();
             } : null,
             child: Text(
-              storage.initialized ? 'OK' : '利用開始',
-              style: TextStyle(fontSize: 16)
+              storage.initialized ? 'OK' : t.startUsing,
+              style: const TextStyle(fontSize: 16)
             )
           ),
-          const Gap(16),
+          const Gap(10),
+          const LanguageToggle(),
+          const Gap(12),
           Wrap(spacing: 12, children: [
             FutureBuilder<PackageInfo>(
               future: PackageInfo.fromPlatform(),
               builder: (context, snapshot) => Text(
-                'バージョン: ${snapshot.data?.version ?? ''}',
+                '${t.version}: ${snapshot.data?.version ?? ''}',
                 style: TextStyle(fontSize: 11, color: Colors.grey.shade700)
               )
             ),
-            _linkText('リリース情報', size: 12, onTap: () async {
+            _linkText(t.releaseInfo, size: 12, onTap: () async {
               await launchUrl(Uri.parse(switch(defaultTargetPlatform) {
                 TargetPlatform.android => 'https://play.google.com/store/apps/details?id=com.k26yamauchi.power_suppliable_train_forecast',
                 TargetPlatform.iOS => 'https://apps.apple.com/jp/app/id6788913050',
                 _ => 'https://example.com/'
               }));
             }),
-            _linkText('ライセンス', size: 12, onTap: () {
+            _linkText(t.licenses, size: 12, onTap: () {
               showLicensePage(context: context);
             })
           ])

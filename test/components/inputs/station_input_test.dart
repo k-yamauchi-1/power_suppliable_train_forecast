@@ -4,6 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:power_suppliable_train_forecast/components/inputs/station_input.dart';
+import 'package:power_suppliable_train_forecast/i18n/strings.g.dart';
 import 'package:power_suppliable_train_forecast/models/search_condition.dart';
 import 'package:power_suppliable_train_forecast/models/service.dart';
 import 'package:power_suppliable_train_forecast/models/station.dart';
@@ -15,6 +16,7 @@ void main() {
     late Service mockService;
 
     setUp(() async {
+      await LocaleSettings.setLocale(AppLocale.ja);
       SharedPreferences.setMockInitialValues({});
       sharedPrefs = await SharedPreferences.getInstance();
 

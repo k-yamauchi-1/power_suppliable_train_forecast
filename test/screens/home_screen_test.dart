@@ -15,6 +15,7 @@ import 'package:power_suppliable_train_forecast/models/search_condition.dart';
 import 'package:power_suppliable_train_forecast/models/service.dart';
 import 'package:power_suppliable_train_forecast/models/station.dart';
 import 'package:power_suppliable_train_forecast/models/train.dart';
+import 'package:power_suppliable_train_forecast/i18n/strings.g.dart';
 import 'package:power_suppliable_train_forecast/providers/local_storage.dart';
 import 'package:power_suppliable_train_forecast/screens/home_screen.dart';
 
@@ -41,6 +42,7 @@ void main() {
     late SharedPreferences sharedPrefs;
 
     setUp(() async {
+      await LocaleSettings.setLocale(AppLocale.ja);
       // already initialized, so AppInfoDialog is not shown
       SharedPreferences.setMockInitialValues({'init': 1});
       sharedPrefs = await SharedPreferences.getInstance();

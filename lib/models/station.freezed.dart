@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$Station {
 
- String get name; String get alias; String get intl;@JsonKey(readValue: _readDestinations) Map<Direction, String> get destinations;
+ String get name; String get alias; String get intl;@JsonKey(readValue: _readDestinations) Map<Direction, String> get destinations;@JsonKey(readValue: _readDestinationsIntl) Map<Direction, String> get destinationsIntl;
 /// Create a copy of Station
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $StationCopyWith<Station> get copyWith => _$StationCopyWithImpl<Station>(this as
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Station&&(identical(other.name, name) || other.name == name)&&(identical(other.alias, alias) || other.alias == alias)&&(identical(other.intl, intl) || other.intl == intl)&&const DeepCollectionEquality().equals(other.destinations, destinations));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Station&&(identical(other.name, name) || other.name == name)&&(identical(other.alias, alias) || other.alias == alias)&&(identical(other.intl, intl) || other.intl == intl)&&const DeepCollectionEquality().equals(other.destinations, destinations)&&const DeepCollectionEquality().equals(other.destinationsIntl, destinationsIntl));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,name,alias,intl,const DeepCollectionEquality().hash(destinations));
+int get hashCode => Object.hash(runtimeType,name,alias,intl,const DeepCollectionEquality().hash(destinations),const DeepCollectionEquality().hash(destinationsIntl));
 
 @override
 String toString() {
-  return 'Station(name: $name, alias: $alias, intl: $intl, destinations: $destinations)';
+  return 'Station(name: $name, alias: $alias, intl: $intl, destinations: $destinations, destinationsIntl: $destinationsIntl)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $StationCopyWith<$Res>  {
   factory $StationCopyWith(Station value, $Res Function(Station) _then) = _$StationCopyWithImpl;
 @useResult
 $Res call({
- String name, String alias, String intl,@JsonKey(readValue: _readDestinations) Map<Direction, String> destinations
+ String name, String alias, String intl,@JsonKey(readValue: _readDestinations) Map<Direction, String> destinations,@JsonKey(readValue: _readDestinationsIntl) Map<Direction, String> destinationsIntl
 });
 
 
@@ -65,12 +65,13 @@ class _$StationCopyWithImpl<$Res>
 
 /// Create a copy of Station
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? name = null,Object? alias = null,Object? intl = null,Object? destinations = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? name = null,Object? alias = null,Object? intl = null,Object? destinations = null,Object? destinationsIntl = null,}) {
   return _then(_self.copyWith(
 name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,alias: null == alias ? _self.alias : alias // ignore: cast_nullable_to_non_nullable
 as String,intl: null == intl ? _self.intl : intl // ignore: cast_nullable_to_non_nullable
 as String,destinations: null == destinations ? _self.destinations : destinations // ignore: cast_nullable_to_non_nullable
+as Map<Direction, String>,destinationsIntl: null == destinationsIntl ? _self.destinationsIntl : destinationsIntl // ignore: cast_nullable_to_non_nullable
 as Map<Direction, String>,
   ));
 }
@@ -156,10 +157,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String name,  String alias,  String intl, @JsonKey(readValue: _readDestinations)  Map<Direction, String> destinations)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String name,  String alias,  String intl, @JsonKey(readValue: _readDestinations)  Map<Direction, String> destinations, @JsonKey(readValue: _readDestinationsIntl)  Map<Direction, String> destinationsIntl)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Station() when $default != null:
-return $default(_that.name,_that.alias,_that.intl,_that.destinations);case _:
+return $default(_that.name,_that.alias,_that.intl,_that.destinations,_that.destinationsIntl);case _:
   return orElse();
 
 }
@@ -177,10 +178,10 @@ return $default(_that.name,_that.alias,_that.intl,_that.destinations);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String name,  String alias,  String intl, @JsonKey(readValue: _readDestinations)  Map<Direction, String> destinations)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String name,  String alias,  String intl, @JsonKey(readValue: _readDestinations)  Map<Direction, String> destinations, @JsonKey(readValue: _readDestinationsIntl)  Map<Direction, String> destinationsIntl)  $default,) {final _that = this;
 switch (_that) {
 case _Station():
-return $default(_that.name,_that.alias,_that.intl,_that.destinations);case _:
+return $default(_that.name,_that.alias,_that.intl,_that.destinations,_that.destinationsIntl);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -197,10 +198,10 @@ return $default(_that.name,_that.alias,_that.intl,_that.destinations);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String name,  String alias,  String intl, @JsonKey(readValue: _readDestinations)  Map<Direction, String> destinations)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String name,  String alias,  String intl, @JsonKey(readValue: _readDestinations)  Map<Direction, String> destinations, @JsonKey(readValue: _readDestinationsIntl)  Map<Direction, String> destinationsIntl)?  $default,) {final _that = this;
 switch (_that) {
 case _Station() when $default != null:
-return $default(_that.name,_that.alias,_that.intl,_that.destinations);case _:
+return $default(_that.name,_that.alias,_that.intl,_that.destinations,_that.destinationsIntl);case _:
   return null;
 
 }
@@ -212,7 +213,7 @@ return $default(_that.name,_that.alias,_that.intl,_that.destinations);case _:
 @JsonSerializable()
 
 class _Station extends Station {
-  const _Station({required this.name, required this.alias, required this.intl, @JsonKey(readValue: _readDestinations) final  Map<Direction, String> destinations = const {}}): _destinations = destinations,super._();
+  const _Station({required this.name, required this.alias, required this.intl, @JsonKey(readValue: _readDestinations) final  Map<Direction, String> destinations = const {}, @JsonKey(readValue: _readDestinationsIntl) final  Map<Direction, String> destinationsIntl = const {}}): _destinations = destinations,_destinationsIntl = destinationsIntl,super._();
   factory _Station.fromJson(Map<String, dynamic> json) => _$StationFromJson(json);
 
 @override final  String name;
@@ -223,6 +224,13 @@ class _Station extends Station {
   if (_destinations is EqualUnmodifiableMapView) return _destinations;
   // ignore: implicit_dynamic_type
   return EqualUnmodifiableMapView(_destinations);
+}
+
+ final  Map<Direction, String> _destinationsIntl;
+@override@JsonKey(readValue: _readDestinationsIntl) Map<Direction, String> get destinationsIntl {
+  if (_destinationsIntl is EqualUnmodifiableMapView) return _destinationsIntl;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableMapView(_destinationsIntl);
 }
 
 
@@ -239,16 +247,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Station&&(identical(other.name, name) || other.name == name)&&(identical(other.alias, alias) || other.alias == alias)&&(identical(other.intl, intl) || other.intl == intl)&&const DeepCollectionEquality().equals(other._destinations, _destinations));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Station&&(identical(other.name, name) || other.name == name)&&(identical(other.alias, alias) || other.alias == alias)&&(identical(other.intl, intl) || other.intl == intl)&&const DeepCollectionEquality().equals(other._destinations, _destinations)&&const DeepCollectionEquality().equals(other._destinationsIntl, _destinationsIntl));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,name,alias,intl,const DeepCollectionEquality().hash(_destinations));
+int get hashCode => Object.hash(runtimeType,name,alias,intl,const DeepCollectionEquality().hash(_destinations),const DeepCollectionEquality().hash(_destinationsIntl));
 
 @override
 String toString() {
-  return 'Station(name: $name, alias: $alias, intl: $intl, destinations: $destinations)';
+  return 'Station(name: $name, alias: $alias, intl: $intl, destinations: $destinations, destinationsIntl: $destinationsIntl)';
 }
 
 
@@ -259,7 +267,7 @@ abstract mixin class _$StationCopyWith<$Res> implements $StationCopyWith<$Res> {
   factory _$StationCopyWith(_Station value, $Res Function(_Station) _then) = __$StationCopyWithImpl;
 @override @useResult
 $Res call({
- String name, String alias, String intl,@JsonKey(readValue: _readDestinations) Map<Direction, String> destinations
+ String name, String alias, String intl,@JsonKey(readValue: _readDestinations) Map<Direction, String> destinations,@JsonKey(readValue: _readDestinationsIntl) Map<Direction, String> destinationsIntl
 });
 
 
@@ -276,12 +284,13 @@ class __$StationCopyWithImpl<$Res>
 
 /// Create a copy of Station
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? name = null,Object? alias = null,Object? intl = null,Object? destinations = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? name = null,Object? alias = null,Object? intl = null,Object? destinations = null,Object? destinationsIntl = null,}) {
   return _then(_Station(
 name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,alias: null == alias ? _self.alias : alias // ignore: cast_nullable_to_non_nullable
 as String,intl: null == intl ? _self.intl : intl // ignore: cast_nullable_to_non_nullable
 as String,destinations: null == destinations ? _self._destinations : destinations // ignore: cast_nullable_to_non_nullable
+as Map<Direction, String>,destinationsIntl: null == destinationsIntl ? _self._destinationsIntl : destinationsIntl // ignore: cast_nullable_to_non_nullable
 as Map<Direction, String>,
   ));
 }

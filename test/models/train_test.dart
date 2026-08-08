@@ -1,7 +1,10 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:power_suppliable_train_forecast/i18n/strings.g.dart';
 import 'package:power_suppliable_train_forecast/models/train.dart';
 
 void main() {
+  setUp(() async => await LocaleSettings.setLocale(AppLocale.ja));
+
   group('TrainStop', () {
     test('dateMin calculation is correct', () {
       const stop1 = TrainStop(id: 'OH01', hour: 6, min: 5);

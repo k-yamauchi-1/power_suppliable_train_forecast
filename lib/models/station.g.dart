@@ -15,6 +15,12 @@ _Station _$StationFromJson(Map<String, dynamic> json) => _Station(
         (k, e) => MapEntry($enumDecode(_$DirectionEnumMap, k), e as String),
       ) ??
       const {},
+  destinationsIntl:
+      (_readDestinationsIntl(json, 'destinationsIntl') as Map<String, dynamic>?)
+          ?.map(
+            (k, e) => MapEntry($enumDecode(_$DirectionEnumMap, k), e as String),
+          ) ??
+      const {},
 );
 
 Map<String, dynamic> _$StationToJson(_Station instance) => <String, dynamic>{
@@ -22,6 +28,9 @@ Map<String, dynamic> _$StationToJson(_Station instance) => <String, dynamic>{
   'alias': instance.alias,
   'intl': instance.intl,
   'destinations': instance.destinations.map(
+    (k, e) => MapEntry(_$DirectionEnumMap[k]!, e),
+  ),
+  'destinationsIntl': instance.destinationsIntl.map(
     (k, e) => MapEntry(_$DirectionEnumMap[k]!, e),
   ),
 };

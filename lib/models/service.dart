@@ -65,7 +65,7 @@ abstract class Service with _$Service {
       (sc) => cond.depID == (isDirectionDown ? sc.from : sc.to)
     ).map((sc) {
       final id = isDirectionDown ? sc.to : sc.from;
-      return (id: id, name: stations[id]!.name, surcharge: sc.price);
+      return (id: id, name: stations[id]!.lName, surcharge: sc.price);
     }).toList() : [];
   }
 

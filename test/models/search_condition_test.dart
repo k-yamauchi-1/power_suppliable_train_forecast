@@ -2,11 +2,14 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'package:power_suppliable_train_forecast/i18n/strings.g.dart';
 import 'package:power_suppliable_train_forecast/models/search_condition.dart';
 import 'package:power_suppliable_train_forecast/models/station.dart';
 import 'package:power_suppliable_train_forecast/providers/local_storage.dart';
 
 void main() {
+  setUp(() async => await LocaleSettings.setLocale(AppLocale.ja));
+
   group('TargetDate', () {
     test('date returns correct DateTime or null', () {
       final now = DateTime.now();
@@ -31,8 +34,7 @@ void main() {
       expect(TargetDate.holiday.note, '予報なし');
 
       final tDate = TargetDate.today.date!;
-      final expectedTodayNote =
-          ' ${tDate.month}/${tDate.day.toString().padLeft(2, '0')}'
+      final expectedTodayNote = ' ${tDate.month}/${tDate.day}'
           '(${['月', '火', '水', '木', '金', '土', '日'][tDate.weekday - 1]})';
       expect(TargetDate.today.note, expectedTodayNote);
     });

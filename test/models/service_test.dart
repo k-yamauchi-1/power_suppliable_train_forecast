@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 
+import 'package:power_suppliable_train_forecast/i18n/strings.g.dart';
 import 'package:power_suppliable_train_forecast/models/facility.dart';
 import 'package:power_suppliable_train_forecast/models/search_condition.dart';
 import 'package:power_suppliable_train_forecast/models/service.dart';
@@ -7,6 +8,8 @@ import 'package:power_suppliable_train_forecast/models/station.dart';
 import 'package:power_suppliable_train_forecast/models/train.dart';
 
 void main() {
+  setUp(() async => await LocaleSettings.setLocale(AppLocale.ja));
+
   group('Surcharge', () {
     test('fromJson & toJson map correctly', () {
       final json = {'from': 'OH01', 'to': 'OH02', 'price': 500};

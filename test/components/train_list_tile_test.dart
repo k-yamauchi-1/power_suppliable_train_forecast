@@ -8,6 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:power_suppliable_train_forecast/components/app_icons/probability_icon.dart';
 import 'package:power_suppliable_train_forecast/components/train_list_tile.dart';
+import 'package:power_suppliable_train_forecast/i18n/strings.g.dart';
 import 'package:power_suppliable_train_forecast/models/facility.dart';
 import 'package:power_suppliable_train_forecast/models/train.dart';
 import 'package:power_suppliable_train_forecast/models/service.dart';
@@ -76,6 +77,7 @@ void main() {
   );
 
   setUp(() async {
+    await LocaleSettings.setLocale(AppLocale.ja);
     SharedPreferences.setMockInitialValues({});
     sharedPrefs = await SharedPreferences.getInstance();
   });
@@ -127,10 +129,10 @@ void main() {
         expect(find.text('はこね1号'), findsOneWidget);
 
         // 4. Destinations
-        expect(find.text('小田原 行'), findsOneWidget);
+        expect(find.text(t.destination(s: '小田原')), findsOneWidget);
 
         // 5. Stops (excluding last)
-        expect(find.text('町田 に停車'), findsOneWidget);
+        expect(find.text(t.stopsAt(s: '町田')), findsOneWidget);
 
         // 6. Probability icon is shown with null probability
         expect(find.byType(ProbabilityIcon), findsOneWidget);

@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:power_suppliable_train_forecast/components/error_info.dart';
+import 'package:power_suppliable_train_forecast/i18n/strings.g.dart';
 
 void main() {
   group('ErrInfoWidget', () {
+    setUp(() async => await LocaleSettings.setLocale(AppLocale.ja));
+
     Widget createWidgetUnderTest({String? message, String? detail}) => MaterialApp(
       home: Scaffold(body: ErrInfoWidget(message: message, detail: detail))
     );

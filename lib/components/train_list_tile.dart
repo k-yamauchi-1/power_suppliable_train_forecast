@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'scrollable_text.dart';
 
+import '../i18n/strings.g.dart';
 import '../models/facility.dart';
 import '../models/service.dart';
 import '../models/train.dart';
@@ -18,7 +19,7 @@ class TrainListTile extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final service = ref.watch(serviceProvider).value;
     final stopsNameList =
-        train.stops.map((s) => service?.stations[s.id]?.name ?? '').toList();
+        train.stops.map((s) => service?.stations[s.id]?.lName ?? '').toList();
     final carType = (ref.watch(forecastProvider).value?[train.facilityId]
         ?? service?.facilities[train.facilityId])?.carType ?? CarType.unfixed;
 
@@ -73,11 +74,14 @@ class TrainListTile extends ConsumerWidget {
                     pauseBetween: const Duration(milliseconds: 480)
                   ))
                 ]),
-                Text('${stopsNameList.last} 行', style: const TextStyle(
-                  fontSize: 15, fontWeight: FontWeight.bold
-                )),
+                Text(
+                  t.destination(s: stopsNameList.last),
+                  style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold)
+                ),
                 if (stopsNameList.length >= 3)  Text(
-                  '${(stopsNameList.sublist(1)..removeLast()).join('・')} に停車',
+                  t.stopsAt(s: (
+                    stopsNameList.sublist(1)..removeLast()
+                  ).join(t.separator)),
                   style: const TextStyle(fontSize: 12),
                   maxLines: 2, overflow: TextOverflow.ellipsis
                 )
@@ -106,7 +110,7 @@ class TrainListTile extends ConsumerWidget {
                     padding: const EdgeInsets.symmetric(vertical: 3.0),
                     child: Row(mainAxisSize: MainAxisSize.min, children: [
                       Text(
-                        '${entry.key}\n号車', textAlign: TextAlign.center,
+                        t.carNo(n: entry.key), textAlign: TextAlign.center,
                         style: const TextStyle(fontSize: 12, height: 1.2)
                       ),
                       const Gap(3),

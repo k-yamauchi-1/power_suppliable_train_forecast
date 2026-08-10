@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -20,7 +21,10 @@ import 'firebase_options.dart';
 void main() {
   runZonedGuarded(() {
     WidgetsFlutterBinding.ensureInitialized();
-    runApp(const PowerSupliableTrainApp());
+    SystemChrome.setPreferredOrientations([  // 画面向きを縦に固定
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown
+    ]).then((_) => runApp(const PowerSupliableTrainApp()));
   }, (error, stack) {
     // Zone 内で捕捉されなかった非同期例外を Crashlytics に記録する
     crashlyticsInstance?.recordError(error, stack, fatal: true);

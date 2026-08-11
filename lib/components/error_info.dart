@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
 const prodMessage = 'ただいまサービスの提供を停止しております。\n'
-'メンテナンス情報は下方「更新情報」をご確認下さい。';
+'メンテナンス情報は下方「最新情報」をご確認下さい。';
 
 class ErrInfoWidget extends StatelessWidget {
   final String? message;

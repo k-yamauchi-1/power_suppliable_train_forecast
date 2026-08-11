@@ -1,15 +1,18 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:url_launcher/url_launcher.dart';
 
-import '../components/bottom_bar.dart';
+// import '../components/bottom_bar.dart';
 import '../components/dialogs/app_info_dialog.dart';
 import '../components/error_info.dart';
 import '../components/inputs/arv_stations_selector.dart';
 import '../components/inputs/cond_save_button.dart';
 import '../components/inputs/direction_selector.dart';
+import '../components/inputs/saved_cond_list_button.dart';
 import '../components/inputs/station_input.dart';
 import '../components/inputs/target_date_selector.dart';
 import '../components/inputs/time_selector.dart';
@@ -49,7 +52,17 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         title: const Text('列車検索'),
         toolbarHeight: 40,
         backgroundColor: const Color(0xFFF05322),
-        foregroundColor: Colors.white
+        foregroundColor: Colors.white,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.info),
+            tooltip: '本アプリについて',
+            onPressed: () async => await showDialog(
+              context: context,
+              builder: (context) => const AppInfoDialog()
+            )
+          )
+        ]
       ),
       body: Column(children: [
         Container(
@@ -77,7 +90,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     Gap(2),
                     ArvStationsSelector(),
                     Gap(4),
-                    Row(children: [Spacer(), CondSaveButton()])
+                    Row(children: [
+                      Spacer(),
+                      SavedCondListButton(),
+                      Gap(10),
+                      CondSaveButton()
+                    ])
                   ])
               ]
             )))
@@ -103,7 +121,30 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         else
           const Expanded(child: Center(child: CircularProgressIndicator()))
       ]),
-      bottomNavigationBar: BottomBar()
+      bottomNavigationBar: SafeArea(child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+        child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+          const Spacer(),
+          ElevatedButton(
+            onPressed: () => launchUrl(Uri.parse('https://x.com/pwrSupplyTrnApp')),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.black87,
+              foregroundColor: Colors.white,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
+              padding: const EdgeInsets.symmetric(horizontal: 12),
+              visualDensity: VisualDensity.compact, elevation: 1
+            ),
+            child: Row(mainAxisSize: MainAxisSize.min, children: [
+              const FaIcon(FontAwesomeIcons.xTwitter, size: 16),
+              const Gap(6),
+              Text('最新情報\nお問合せ', style: const TextStyle(
+                fontSize: 10, height: 1.1
+              ))
+            ])
+          )
+        ])
+      ))
     );
   }
 }
+

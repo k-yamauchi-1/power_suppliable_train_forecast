@@ -8,6 +8,7 @@ import 'package:power_suppliable_train_forecast/components/error_info.dart';
 import 'package:power_suppliable_train_forecast/components/inputs/arv_stations_selector.dart';
 import 'package:power_suppliable_train_forecast/components/inputs/cond_save_button.dart';
 import 'package:power_suppliable_train_forecast/components/inputs/direction_selector.dart';
+import 'package:power_suppliable_train_forecast/components/inputs/saved_cond_list_button.dart';
 import 'package:power_suppliable_train_forecast/components/train_list_tile.dart';
 import 'package:power_suppliable_train_forecast/models/facility.dart';
 import 'package:power_suppliable_train_forecast/models/search_condition.dart';
@@ -109,8 +110,19 @@ void main() {
         // inputs should be shown.
         expect(find.byType(DirectionSelector), findsOneWidget);
         expect(find.byType(ArvStationsSelector), findsOneWidget);
+        expect(find.byType(SavedCondListButton), findsOneWidget);
         expect(find.byType(CondSaveButton), findsOneWidget);
       }
     );
+
+    testWidgets('renders navigation buttons in AppBar and bottom fixed area', (tester) async {
+      await tester.pumpWidget(
+        createWidgetUnderTest(serviceValue: AsyncData(mockService))
+      );
+      await tester.pump();
+
+      expect(find.byIcon(Icons.info), findsOneWidget);
+      expect(find.text('最新情報\nお問合せ'), findsOneWidget);
+    });
   });
 }

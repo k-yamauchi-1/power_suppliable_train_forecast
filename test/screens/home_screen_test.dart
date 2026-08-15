@@ -121,7 +121,7 @@ void main() {
       );
       await tester.pump();
 
-      expect(find.byIcon(Icons.help), findsOneWidget);
+      expect(find.byIcon(Icons.info), findsOneWidget);
       expect(find.text('最新情報\nお問合せ'), findsOneWidget);
     });
   });

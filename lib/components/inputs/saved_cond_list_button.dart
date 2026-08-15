@@ -16,6 +16,7 @@ class SavedCondListButton extends StatelessWidget {
         foregroundColor: Colors.black87,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
         padding: const EdgeInsets.all(0),
+        visualDensity: VisualDensity.compact,
         minimumSize: const Size(48, 40)
       ),
       child: const Icon(Icons.bookmarks, size: 14)

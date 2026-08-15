@@ -55,7 +55,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         foregroundColor: Colors.white,
         actions: [
           IconButton(
-            icon: const Icon(Icons.help),
+            icon: const Icon(Icons.info),
             tooltip: '本アプリについて',
             onPressed: () async => await showDialog(
               context: context,
@@ -121,9 +121,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         else
           const Expanded(child: Center(child: CircularProgressIndicator()))
       ]),
-      bottomNavigationBar: Container(
-        color: Theme.of(context).cardColor,
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+      bottomNavigationBar: SafeArea(child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
         child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
           const Spacer(),
           ElevatedButton(
@@ -144,7 +143,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             ])
           )
         ])
-      )
+      ))
     );
   }
 }

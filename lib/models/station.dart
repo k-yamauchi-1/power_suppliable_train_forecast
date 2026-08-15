@@ -28,7 +28,7 @@ abstract class Station with _$Station {
 
   factory Station.fromJson(Map<String, dynamic> json) => _$StationFromJson(json);
 
-  bool matches(String q) => q.normalize().isNotEmpty && (
+  bool matches(String q) => (
     name.normalize().contains(q.normalize()) ||
     alias.normalize().contains(q.normalize()) ||
     intl.normalize().contains(q.normalize())

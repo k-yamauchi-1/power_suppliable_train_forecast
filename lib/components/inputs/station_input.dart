@@ -24,9 +24,32 @@ class StationInput extends ConsumerWidget {
         depID: service?.stations.containsKey(s.key) == true ? s.key : null,
         arvIDs: []
       ),
-      fieldViewBuilder: (ctx, ctrl, fcs, _) => TextField(
-        controller: ctrl, focusNode: fcs, decoration: const InputDecoration(
-          labelText: '発駅', isDense: true, border: OutlineInputBorder()
+      fieldViewBuilder: (ctx, ctrl, fcs, _) => ListenableBuilder(
+        listenable: Listenable.merge([ctrl, fcs]),
+        builder: (context, _) => PopScope(
+          canPop: !fcs.hasFocus,
+          onPopInvokedWithResult: (didPop, result) {
+            if (!didPop)  fcs.unfocus();
+          },
+          child: Focus(
+            onFocusChange: (hasFcs) {  // フォーカスが外れた際 空なら元の駅名に戻す
+              if (!hasFcs && ctrl.text.trim().isEmpty)  ctrl.text = stationName;
+            },
+            child: TextField(
+              controller: ctrl, focusNode: fcs, decoration: InputDecoration(
+                labelText: '発駅',
+                isDense: true,
+                border: const OutlineInputBorder(),
+                suffixIcon: ctrl.text.isEmpty ? null : IconButton(
+                  icon: const Icon(Icons.clear),
+                  onPressed: () {
+                    ctrl.clear();
+                    fcs.requestFocus();
+                  }
+                )
+              )
+            )
+          )
         )
       )
     );

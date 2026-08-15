@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$Train {
 
- String get name; String get intl; int get number;@JsonKey(name: 'facility_id') String get facilityId; List<TrainStop> get stops;@JsonKey(name: 'except_dates') List<DateTime> get exceptDates;
+ String get name; String get intl; int get number;@JsonKey(name: 'facility_id') String get facilityId; List<TrainStop> get stops;@JsonKey(name: 'except_dates') List<DateTime> get exceptDates; int get depIdx; set depIdx(int value);
 /// Create a copy of Train
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -26,18 +26,11 @@ $TrainCopyWith<Train> get copyWith => _$TrainCopyWithImpl<Train>(this as Train, 
   Map<String, dynamic> toJson();
 
 
-@override
-bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Train&&(identical(other.name, name) || other.name == name)&&(identical(other.intl, intl) || other.intl == intl)&&(identical(other.number, number) || other.number == number)&&(identical(other.facilityId, facilityId) || other.facilityId == facilityId)&&const DeepCollectionEquality().equals(other.stops, stops)&&const DeepCollectionEquality().equals(other.exceptDates, exceptDates));
-}
 
-@JsonKey(includeFromJson: false, includeToJson: false)
-@override
-int get hashCode => Object.hash(runtimeType,name,intl,number,facilityId,const DeepCollectionEquality().hash(stops),const DeepCollectionEquality().hash(exceptDates));
 
 @override
 String toString() {
-  return 'Train(name: $name, intl: $intl, number: $number, facilityId: $facilityId, stops: $stops, exceptDates: $exceptDates)';
+  return 'Train(name: $name, intl: $intl, number: $number, facilityId: $facilityId, stops: $stops, exceptDates: $exceptDates, depIdx: $depIdx)';
 }
 
 
@@ -48,7 +41,7 @@ abstract mixin class $TrainCopyWith<$Res>  {
   factory $TrainCopyWith(Train value, $Res Function(Train) _then) = _$TrainCopyWithImpl;
 @useResult
 $Res call({
- String name, String intl, int number,@JsonKey(name: 'facility_id') String facilityId, List<TrainStop> stops,@JsonKey(name: 'except_dates') List<DateTime> exceptDates
+ String name, String intl, int number,@JsonKey(name: 'facility_id') String facilityId, List<TrainStop> stops,@JsonKey(name: 'except_dates') List<DateTime> exceptDates, int depIdx
 });
 
 
@@ -65,7 +58,7 @@ class _$TrainCopyWithImpl<$Res>
 
 /// Create a copy of Train
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? name = null,Object? intl = null,Object? number = null,Object? facilityId = null,Object? stops = null,Object? exceptDates = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? name = null,Object? intl = null,Object? number = null,Object? facilityId = null,Object? stops = null,Object? exceptDates = null,Object? depIdx = null,}) {
   return _then(_self.copyWith(
 name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,intl: null == intl ? _self.intl : intl // ignore: cast_nullable_to_non_nullable
@@ -73,7 +66,8 @@ as String,number: null == number ? _self.number : number // ignore: cast_nullabl
 as int,facilityId: null == facilityId ? _self.facilityId : facilityId // ignore: cast_nullable_to_non_nullable
 as String,stops: null == stops ? _self.stops : stops // ignore: cast_nullable_to_non_nullable
 as List<TrainStop>,exceptDates: null == exceptDates ? _self.exceptDates : exceptDates // ignore: cast_nullable_to_non_nullable
-as List<DateTime>,
+as List<DateTime>,depIdx: null == depIdx ? _self.depIdx : depIdx // ignore: cast_nullable_to_non_nullable
+as int,
   ));
 }
 
@@ -158,10 +152,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String name,  String intl,  int number, @JsonKey(name: 'facility_id')  String facilityId,  List<TrainStop> stops, @JsonKey(name: 'except_dates')  List<DateTime> exceptDates)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String name,  String intl,  int number, @JsonKey(name: 'facility_id')  String facilityId,  List<TrainStop> stops, @JsonKey(name: 'except_dates')  List<DateTime> exceptDates,  int depIdx)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Train() when $default != null:
-return $default(_that.name,_that.intl,_that.number,_that.facilityId,_that.stops,_that.exceptDates);case _:
+return $default(_that.name,_that.intl,_that.number,_that.facilityId,_that.stops,_that.exceptDates,_that.depIdx);case _:
   return orElse();
 
 }
@@ -179,10 +173,10 @@ return $default(_that.name,_that.intl,_that.number,_that.facilityId,_that.stops,
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String name,  String intl,  int number, @JsonKey(name: 'facility_id')  String facilityId,  List<TrainStop> stops, @JsonKey(name: 'except_dates')  List<DateTime> exceptDates)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String name,  String intl,  int number, @JsonKey(name: 'facility_id')  String facilityId,  List<TrainStop> stops, @JsonKey(name: 'except_dates')  List<DateTime> exceptDates,  int depIdx)  $default,) {final _that = this;
 switch (_that) {
 case _Train():
-return $default(_that.name,_that.intl,_that.number,_that.facilityId,_that.stops,_that.exceptDates);case _:
+return $default(_that.name,_that.intl,_that.number,_that.facilityId,_that.stops,_that.exceptDates,_that.depIdx);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -199,10 +193,10 @@ return $default(_that.name,_that.intl,_that.number,_that.facilityId,_that.stops,
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String name,  String intl,  int number, @JsonKey(name: 'facility_id')  String facilityId,  List<TrainStop> stops, @JsonKey(name: 'except_dates')  List<DateTime> exceptDates)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String name,  String intl,  int number, @JsonKey(name: 'facility_id')  String facilityId,  List<TrainStop> stops, @JsonKey(name: 'except_dates')  List<DateTime> exceptDates,  int depIdx)?  $default,) {final _that = this;
 switch (_that) {
 case _Train() when $default != null:
-return $default(_that.name,_that.intl,_that.number,_that.facilityId,_that.stops,_that.exceptDates);case _:
+return $default(_that.name,_that.intl,_that.number,_that.facilityId,_that.stops,_that.exceptDates,_that.depIdx);case _:
   return null;
 
 }
@@ -214,27 +208,16 @@ return $default(_that.name,_that.intl,_that.number,_that.facilityId,_that.stops,
 @JsonSerializable()
 
 class _Train extends Train {
-  const _Train({required this.name, this.intl = '', required this.number, @JsonKey(name: 'facility_id') required this.facilityId, required final  List<TrainStop> stops, @JsonKey(name: 'except_dates') final  List<DateTime> exceptDates = const []}): _stops = stops,_exceptDates = exceptDates,super._();
+   _Train({required this.name, this.intl = '', required this.number, @JsonKey(name: 'facility_id') required this.facilityId, required this.stops, @JsonKey(name: 'except_dates') this.exceptDates = const [], this.depIdx = 0}): super._();
   factory _Train.fromJson(Map<String, dynamic> json) => _$TrainFromJson(json);
 
 @override final  String name;
 @override@JsonKey() final  String intl;
 @override final  int number;
 @override@JsonKey(name: 'facility_id') final  String facilityId;
- final  List<TrainStop> _stops;
-@override List<TrainStop> get stops {
-  if (_stops is EqualUnmodifiableListView) return _stops;
-  // ignore: implicit_dynamic_type
-  return EqualUnmodifiableListView(_stops);
-}
-
- final  List<DateTime> _exceptDates;
-@override@JsonKey(name: 'except_dates') List<DateTime> get exceptDates {
-  if (_exceptDates is EqualUnmodifiableListView) return _exceptDates;
-  // ignore: implicit_dynamic_type
-  return EqualUnmodifiableListView(_exceptDates);
-}
-
+@override final  List<TrainStop> stops;
+@override@JsonKey(name: 'except_dates') final  List<DateTime> exceptDates;
+@override@JsonKey()  int depIdx;
 
 /// Create a copy of Train
 /// with the given fields replaced by the non-null parameter values.
@@ -247,18 +230,11 @@ Map<String, dynamic> toJson() {
   return _$TrainToJson(this, );
 }
 
-@override
-bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Train&&(identical(other.name, name) || other.name == name)&&(identical(other.intl, intl) || other.intl == intl)&&(identical(other.number, number) || other.number == number)&&(identical(other.facilityId, facilityId) || other.facilityId == facilityId)&&const DeepCollectionEquality().equals(other._stops, _stops)&&const DeepCollectionEquality().equals(other._exceptDates, _exceptDates));
-}
 
-@JsonKey(includeFromJson: false, includeToJson: false)
-@override
-int get hashCode => Object.hash(runtimeType,name,intl,number,facilityId,const DeepCollectionEquality().hash(_stops),const DeepCollectionEquality().hash(_exceptDates));
 
 @override
 String toString() {
-  return 'Train(name: $name, intl: $intl, number: $number, facilityId: $facilityId, stops: $stops, exceptDates: $exceptDates)';
+  return 'Train(name: $name, intl: $intl, number: $number, facilityId: $facilityId, stops: $stops, exceptDates: $exceptDates, depIdx: $depIdx)';
 }
 
 
@@ -269,7 +245,7 @@ abstract mixin class _$TrainCopyWith<$Res> implements $TrainCopyWith<$Res> {
   factory _$TrainCopyWith(_Train value, $Res Function(_Train) _then) = __$TrainCopyWithImpl;
 @override @useResult
 $Res call({
- String name, String intl, int number,@JsonKey(name: 'facility_id') String facilityId, List<TrainStop> stops,@JsonKey(name: 'except_dates') List<DateTime> exceptDates
+ String name, String intl, int number,@JsonKey(name: 'facility_id') String facilityId, List<TrainStop> stops,@JsonKey(name: 'except_dates') List<DateTime> exceptDates, int depIdx
 });
 
 
@@ -286,15 +262,16 @@ class __$TrainCopyWithImpl<$Res>
 
 /// Create a copy of Train
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? name = null,Object? intl = null,Object? number = null,Object? facilityId = null,Object? stops = null,Object? exceptDates = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? name = null,Object? intl = null,Object? number = null,Object? facilityId = null,Object? stops = null,Object? exceptDates = null,Object? depIdx = null,}) {
   return _then(_Train(
 name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,intl: null == intl ? _self.intl : intl // ignore: cast_nullable_to_non_nullable
 as String,number: null == number ? _self.number : number // ignore: cast_nullable_to_non_nullable
 as int,facilityId: null == facilityId ? _self.facilityId : facilityId // ignore: cast_nullable_to_non_nullable
-as String,stops: null == stops ? _self._stops : stops // ignore: cast_nullable_to_non_nullable
-as List<TrainStop>,exceptDates: null == exceptDates ? _self._exceptDates : exceptDates // ignore: cast_nullable_to_non_nullable
-as List<DateTime>,
+as String,stops: null == stops ? _self.stops : stops // ignore: cast_nullable_to_non_nullable
+as List<TrainStop>,exceptDates: null == exceptDates ? _self.exceptDates : exceptDates // ignore: cast_nullable_to_non_nullable
+as List<DateTime>,depIdx: null == depIdx ? _self.depIdx : depIdx // ignore: cast_nullable_to_non_nullable
+as int,
   ));
 }
 

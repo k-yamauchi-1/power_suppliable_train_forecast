@@ -78,9 +78,9 @@ class TrainListTile extends ConsumerWidget {
                   t.destination(s: stopsNameList.last),
                   style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold)
                 ),
-                if (stopsNameList.length >= 3)  Text(
+                if (train.depIdx < train.stops.length - 2)  Text(
                   t.stopsAt(s: (
-                    stopsNameList.sublist(1)..removeLast()
+                    stopsNameList.sublist(train.depIdx + 1)..removeLast()
                   ).join(t.separator)),
                   style: const TextStyle(fontSize: 12),
                   maxLines: 2, overflow: TextOverflow.ellipsis

@@ -26,7 +26,7 @@ final mockService = Service(
     'OH03': Station(name: '小田原', alias: '', intl: ''),
   },
   facilities: const {'f1': Facility(carType: CarType.gse, probabilities: {})},
-  trains: {TimetableDate.weekday: {Direction.up: {'t1': const Train(
+  trains: {TimetableDate.weekday: {Direction.up: {'t1': Train(
     name: 'はこね', number: 1, facilityId: 'f1',
     stops: [
       TrainStop(id: 'OH01', hour: 10, min: 0),

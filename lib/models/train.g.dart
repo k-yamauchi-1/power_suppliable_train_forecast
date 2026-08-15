@@ -19,6 +19,7 @@ _Train _$TrainFromJson(Map<String, dynamic> json) => _Train(
           ?.map((e) => DateTime.parse(e as String))
           .toList() ??
       const [],
+  depIdx: (json['depIdx'] as num?)?.toInt() ?? 0,
 );
 
 Map<String, dynamic> _$TrainToJson(_Train instance) => <String, dynamic>{
@@ -28,6 +29,7 @@ Map<String, dynamic> _$TrainToJson(_Train instance) => <String, dynamic>{
   'facility_id': instance.facilityId,
   'stops': instance.stops,
   'except_dates': instance.exceptDates.map((e) => e.toIso8601String()).toList(),
+  'depIdx': instance.depIdx,
 };
 
 _TrainStop _$TrainStopFromJson(Map<String, dynamic> json) => _TrainStop(

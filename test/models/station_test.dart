@@ -32,8 +32,8 @@ void main() {
         name: '本厚木', alias: 'ほんあつぎ', intl: 'Hon-atsugi', destinations: {}
       );
 
-      // 空白クエリは false
-      expect(station.matches(''), isFalse);
+      // 空白クエリは true
+      expect(station.matches(''), isTrue);
 
       // name 一致
       expect(station.matches('本厚'), isTrue);

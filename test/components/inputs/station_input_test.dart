@@ -58,6 +58,118 @@ void main() {
       expect(find.widgetWithText(TextField, '新宿'), findsOneWidget);
     });
 
+    testWidgets('shows clear button when text is present, and tapping it clears the input and shows all station options', (tester) async {
+      await tester.pumpWidget(createWidgetUnderTest());
+      await tester.pumpAndSettle();
+
+      // Clear button should be visible since initial text is "新宿"
+      expect(find.byIcon(Icons.clear), findsOneWidget);
+
+      // Tap the clear button
+      await tester.tap(find.byIcon(Icons.clear));
+      await tester.pumpAndSettle();
+
+      // TextField should now be empty and clear button should be hidden
+      expect(find.widgetWithText(TextField, ''), findsOneWidget);
+      expect(find.byIcon(Icons.clear), findsNothing);
+
+      // When empty and focused, all station options should be presented in the overlay
+      expect(find.text('新宿'), findsOneWidget);
+      expect(find.text('町田'), findsOneWidget);
+    });
+
+    testWidgets('tapping an empty input field shows all station options', (tester) async {
+      await tester.pumpWidget(ProviderScope(
+        overrides: [
+          sharedPreferencesProvider.overrideWithValue(sharedPrefs),
+          serviceProvider.overrideWith((ref) => Future.value(mockService)),
+          condProvider.overrideWith(() => _MockEmptyCondNotifier())
+        ],
+        child: const MaterialApp(home: Scaffold(body: StationInput()))
+      ));
+      await tester.pumpAndSettle();
+
+      expect(find.widgetWithText(TextField, ''), findsOneWidget);
+      expect(find.byIcon(Icons.clear), findsNothing);
+
+      // Tap the empty TextField to focus
+      await tester.tap(find.byType(TextField));
+      await tester.pumpAndSettle();
+
+      // All station options should be visible in the overlay
+      expect(find.text('新宿'), findsOneWidget);
+      expect(find.text('町田'), findsOneWidget);
+    });
+
+    testWidgets('restores original station name when unfocused with empty input', (tester) async {
+      await tester.pumpWidget(createWidgetUnderTest());
+      await tester.pumpAndSettle();
+
+      // Clear the text using clear button
+      expect(find.byIcon(Icons.clear), findsOneWidget);
+      await tester.tap(find.byIcon(Icons.clear));
+      await tester.pumpAndSettle();
+
+      expect(find.widgetWithText(TextField, ''), findsOneWidget);
+
+      // Unfocus
+      FocusManager.instance.primaryFocus?.unfocus();
+      await tester.pumpAndSettle();
+
+      // Text should be restored to original station name "新宿"
+      expect(find.widgetWithText(TextField, '新宿'), findsOneWidget);
+      expect(find.byIcon(Icons.clear), findsOneWidget);
+    });
+
+    testWidgets('unfocuses and restores original station name on system pop (back button)', (tester) async {
+      await tester.pumpWidget(createWidgetUnderTest());
+      await tester.pumpAndSettle();
+
+      // Clear the text using clear button
+      await tester.tap(find.byIcon(Icons.clear));
+      await tester.pumpAndSettle();
+
+      expect(find.widgetWithText(TextField, ''), findsOneWidget);
+
+      final textField = tester.widget<TextField>(find.byType(TextField));
+      expect(textField.focusNode?.hasFocus, isTrue);
+
+      // Simulate system pop route (back button)
+      final handled = await tester.binding.handlePopRoute();
+      await tester.pumpAndSettle();
+
+      // PopScope should intercept and unfocus
+      expect(handled, isTrue);
+      expect(textField.focusNode?.hasFocus, isFalse);
+
+      // Text should be restored to original station name "新宿"
+      expect(find.widgetWithText(TextField, '新宿'), findsOneWidget);
+    });
+
+    testWidgets('unfocuses and restores original station name when tapping outside', (tester) async {
+      await tester.pumpWidget(createWidgetUnderTest());
+      await tester.pumpAndSettle();
+
+      // Clear the text using clear button
+      await tester.tap(find.byIcon(Icons.clear));
+      await tester.pumpAndSettle();
+
+      expect(find.widgetWithText(TextField, ''), findsOneWidget);
+
+      final textField = tester.widget<TextField>(find.byType(TextField));
+      expect(textField.focusNode?.hasFocus, isTrue);
+
+      // Tap outside the TextField (e.g. at bottom of screen)
+      await tester.tapAt(const Offset(100, 400));
+      await tester.pumpAndSettle();
+
+      // Should be unfocused via onTapOutside
+      expect(textField.focusNode?.hasFocus, isFalse);
+
+      // Text should be restored to original station name "新宿"
+      expect(find.widgetWithText(TextField, '新宿'), findsOneWidget);
+    });
+
     testWidgets('typing a query shows matching station options and selecting one updates condProvider', (tester) async {
       await tester.pumpWidget(createWidgetUnderTest());
       await tester.pumpAndSettle();
@@ -82,3 +194,9 @@ void main() {
     });
   });
 }
+
+class _MockEmptyCondNotifier extends Cond {
+  @override
+  SearchCond build() => const SearchCond(depID: 'NON_EXISTING');
+}
+

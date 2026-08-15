@@ -10,17 +10,19 @@ import 'validate_helpers.dart';
 part 'train.freezed.dart';
 part 'train.g.dart';
 
-@freezed
+@unfreezed
 abstract class Train with _$Train {
-  const Train._();
+  Train._();
 
-  const factory Train({
-    required String name,
-    @Default('') String intl,
-    required int number,
-    @JsonKey(name: 'facility_id') required String facilityId,
-    required List<TrainStop> stops,
-    @JsonKey(name: 'except_dates') @Default([]) List<DateTime> exceptDates
+  factory Train({
+    required final String name,
+    @Default('') final String intl,
+    required final int number,
+    @JsonKey(name: 'facility_id') required final String facilityId,
+    required final List<TrainStop> stops,
+    @JsonKey(name: 'except_dates') @Default([])
+    final List<DateTime> exceptDates,
+    @Default(0) int depIdx
   }) = _Train;
 
   factory Train.fromJson(Map<String, dynamic> json) => _$TrainFromJson(json);
@@ -31,16 +33,17 @@ abstract class Train with _$Train {
 
   Train? stopsAt({required String depID, List<String> arvIDs = const []}) {
     final sorted = [...stops]..sort((a, b) => a.dateMin.compareTo(b.dateMin));
-    final idx = sorted.indexWhere((stop) => stop.id == depID);
-    if (idx < 0 || idx >= stops.length - 1)  return null;
+    depIdx = sorted.indexWhere((stop) => stop.id == depID);
+    if (depIdx < 0 || depIdx >= stops.length - 1)  return null;
 
     return arvIDs.isEmpty || arvIDs.any(
-      (arv) => sorted.sublist(idx + 1).any((s) => s.id == arv)
-    ) ? copyWith(stops: sorted.sublist(idx)) : null;
+      (arv) => sorted.sublist(depIdx + 1).any((s) => s.id == arv)
+    ) ? copyWith(stops: sorted) : null;
   }
+  TrainStop? get depStop => stops.elementAtOrNull(depIdx);
 
-  bool get internalTozanLine => stops.firstOrNull?.id == "OH51" || (
-    stops.firstOrNull?.id == "OH47" && stops.lastOrNull?.id == "OH51"
+  bool get internalTozanLine => depStop?.id == "OH51" || (
+    depStop?.id == "OH47" && stops.lastOrNull?.id == "OH51"
   );
 
   List<String> validate({

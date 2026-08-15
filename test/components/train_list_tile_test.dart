@@ -61,20 +61,19 @@ class MockForecast extends Forecast {
 void main() {
   late SharedPreferences sharedPrefs;
 
-  const stdTestTrain = Train(
+  final stdTestTrain = Train(
     name: 'はこね', number: 1, facilityId: 'f_single',
     stops: [
       TrainStop(id: 'OH01', hour: 10, min: 0),
       TrainStop(id: 'OH03', hour: 10, min: 30)
     ]
   );
-  Widget createWidget([Train train = stdTestTrain]) => ProviderScope(
-    overrides: [
-      serviceProvider.overrideWithValue(AsyncData(mockService)),
-      sharedPreferencesProvider.overrideWithValue(sharedPrefs)
-    ],
-    child: MaterialApp(home: Scaffold(body: TrainListTile(train: train)))
-  );
+  Widget createWidget([Train? train]) => ProviderScope(overrides: [
+    serviceProvider.overrideWithValue(AsyncData(mockService)),
+    sharedPreferencesProvider.overrideWithValue(sharedPrefs)
+  ], child: MaterialApp(
+    home: Scaffold(body: TrainListTile(train: train ?? stdTestTrain))
+  ));
 
   setUp(() async {
     await LocaleSettings.setLocale(AppLocale.ja);
@@ -198,7 +197,7 @@ void main() {
           ),
           child: MaterialApp(home: Scaffold(body: DefaultAssetBundle(
             bundle: ErrorAssetBundle(),
-            child: const TrainListTile(train: stdTestTrain)
+            child: TrainListTile(train: stdTestTrain)
           )))
         ));
 

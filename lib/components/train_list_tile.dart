@@ -60,7 +60,7 @@ class TrainListTile extends ConsumerWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(children: [
-                  Text(train.stops.first.dispTime, style: const TextStyle(
+                  Text(train.depStop!.dispTime, style: const TextStyle(
                     fontWeight: FontWeight.bold, fontSize: 18
                   )),
                   const Gap(8),
@@ -78,9 +78,9 @@ class TrainListTile extends ConsumerWidget {
                   t.destination(s: stopsNameList.last),
                   style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold)
                 ),
-                if (stopsNameList.length >= 3)  Text(
+                if (train.depIdx < train.stops.length - 2)  Text(
                   t.stopsAt(s: (
-                    stopsNameList.sublist(1)..removeLast()
+                    stopsNameList.sublist(train.depIdx + 1)..removeLast()
                   ).join(t.separator)),
                   style: const TextStyle(fontSize: 12),
                   maxLines: 2, overflow: TextOverflow.ellipsis

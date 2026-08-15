@@ -35,7 +35,7 @@ void main() {
   });
 
   group('Train', () {
-    const stdTestTrain = Train(
+    final stdTestTrain = Train(
       name: 'はこね', number: 51, facilityId: 'f1',
       stops: [
         TrainStop(id: 'OH01', hour: 10, min: 0),
@@ -59,11 +59,13 @@ void main() {
     });
 
     test('stopsAt slices stops and returns Train if depID is valid and arvIDs is empty', () {
-      final sliced = stdTestTrain.stopsAt(depID: 'OH02');
-      expect(sliced, isNotNull);
-      expect(sliced!.stops.length, 2);
-      expect(sliced.stops.first.id, 'OH02');
-      expect(sliced.stops.last.id, 'OH03');
+      final train = stdTestTrain.stopsAt(depID: 'OH02');
+      expect(train, isNotNull);
+
+      final slicedStops = train!.stops.sublist(train.depIdx);
+      expect(slicedStops.length, 2);
+      expect(slicedStops.first.id, 'OH02');
+      expect(slicedStops.last.id, 'OH03');
     });
 
     test('stopsAt matches arvIDs correctly and slices', () {
@@ -98,7 +100,7 @@ void main() {
 
     group('internalTozanLine', () {
       test('returns true if the first stop is OH51', () {
-        const train = Train(
+        final train = Train(
           name: '登山電車', number: 1, facilityId: 'f1',
           stops: [
             TrainStop(id: 'OH51', hour: 10, min: 0),
@@ -109,7 +111,7 @@ void main() {
       });
 
       test('returns true if the first stop is OH47 and the last stop is OH51', () {
-        const train = Train(
+        final train = Train(
           name: '登山電車', number: 2, facilityId: 'f1',
           stops: [
             TrainStop(id: 'OH47', hour: 10, min: 0),
@@ -121,7 +123,7 @@ void main() {
       });
 
       test('returns false if the first stop is neither OH51 nor OH47', () {
-        const train = Train(
+        final train = Train(
           name: 'はこね', number: 1, facilityId: 'f1',
           stops: [
             TrainStop(id: 'OH01', hour: 9, min: 0),
@@ -133,7 +135,7 @@ void main() {
       });
 
       test('returns false if the first stop is OH47 but the last stop is not OH51', () {
-        const train = Train(
+        final train = Train(
           name: '各駅停車', number: 1, facilityId: 'f1',
           stops: [
             TrainStop(id: 'OH47', hour: 10, min: 0),
@@ -144,7 +146,7 @@ void main() {
       });
 
       test('returns false if stops is empty', () {
-        const train = Train(name: '回送', number: 1, facilityId: 'f1', stops: []);
+        final train = Train(name: '回送', number: 1, facilityId: 'f1', stops: []);
         expect(train.internalTozanLine, isFalse);
       });
     });

@@ -148,6 +148,30 @@ void main() {
       expect(find.widgetWithText(TextField, '新宿'), findsOneWidget);
     });
 
+    testWidgets('unfocuses and restores original station name when tapping outside', (tester) async {
+      await tester.pumpWidget(createWidgetUnderTest());
+      await tester.pumpAndSettle();
+
+      // Clear the text using clear button
+      await tester.tap(find.byIcon(Icons.clear));
+      await tester.pumpAndSettle();
+
+      expect(find.widgetWithText(TextField, ''), findsOneWidget);
+
+      final textField = tester.widget<TextField>(find.byType(TextField));
+      expect(textField.focusNode?.hasFocus, isTrue);
+
+      // Tap outside the TextField (e.g. at bottom of screen)
+      await tester.tapAt(const Offset(100, 400));
+      await tester.pumpAndSettle();
+
+      // Should be unfocused via onTapOutside
+      expect(textField.focusNode?.hasFocus, isFalse);
+
+      // Text should be restored to original station name "新宿"
+      expect(find.widgetWithText(TextField, '新宿'), findsOneWidget);
+    });
+
     testWidgets('typing a query shows matching station options and selecting one updates condProvider', (tester) async {
       await tester.pumpWidget(createWidgetUnderTest());
       await tester.pumpAndSettle();

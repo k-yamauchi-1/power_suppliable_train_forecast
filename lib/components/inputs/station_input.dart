@@ -39,7 +39,9 @@ class StationInput extends ConsumerWidget {
               if (!hasFcs && ctrl.text.trim().isEmpty)  ctrl.text = stationName;
             },
             child: TextField(
-              controller: ctrl, focusNode: fcs, decoration: InputDecoration(
+              controller: ctrl, focusNode: fcs,
+              onTapOutside: (_) => fcs.unfocus(),
+              decoration: InputDecoration(
                 labelText: t.departureStation,
                 isDense: true,
                 border: const OutlineInputBorder(),

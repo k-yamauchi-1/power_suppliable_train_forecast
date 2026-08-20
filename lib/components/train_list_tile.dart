@@ -60,7 +60,7 @@ class TrainListTile extends ConsumerWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(children: [
-                  Text(train.stops.first.dispTime, style: const TextStyle(
+                  Text(train.depStop!.dispTime, style: const TextStyle(
                     fontWeight: FontWeight.bold, fontSize: 18
                   )),
                   const Gap(8),

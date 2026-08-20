@@ -40,9 +40,10 @@ abstract class Train with _$Train {
       (arv) => sorted.sublist(depIdx + 1).any((s) => s.id == arv)
     ) ? copyWith(stops: sorted) : null;
   }
+  TrainStop? get depStop => stops.elementAtOrNull(depIdx);
 
-  bool get internalTozanLine => stops.firstOrNull?.id == "OH51" || (
-    stops.firstOrNull?.id == "OH47" && stops.lastOrNull?.id == "OH51"
+  bool get internalTozanLine => depStop?.id == "OH51" || (
+    depStop?.id == "OH47" && stops.lastOrNull?.id == "OH51"
   );
 
   List<String> validate({

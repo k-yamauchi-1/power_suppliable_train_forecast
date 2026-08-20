@@ -86,9 +86,9 @@ abstract class Service with _$Service {
     return (regularTrains + extraTrains).map(
       (trn) => trn.stopsAt(depID: cond.depID, arvIDs: cond.arvIDs)
     ).nonNulls.where((trn) => cond.matchTime(
-      hour: trn.stops.first.hour, min: trn.stops.first.min
+      hour: trn.depStop!.hour, min: trn.depStop!.min
     )).toList()..sort(
-      (a, b) => (a.stops.first.dateMin).compareTo(b.stops.first.dateMin)
+      (a, b) => (a.depStop!.dateMin).compareTo(b.depStop!.dateMin)
     );
   }
 
